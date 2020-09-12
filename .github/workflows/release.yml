@@ -1,6 +1,8 @@
 name: release
 on:
-    release
+    push:
+        tags:
+            - *
 jobs:
     release:
         name: Publish a release
@@ -11,4 +13,4 @@ jobs:
             - name: Build and publish images
               run: |
                 version="$(echo "${{ github.ref }}" | cut -d / -f 3)"
-                ./scripts/build . "$version"
+                ./scripts/build -p . "$version"
