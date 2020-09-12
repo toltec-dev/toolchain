@@ -11,4 +11,6 @@ jobs:
             - name: Checkout the Git repository
               uses: actions/checkout@v2
             - name: Build and publish images
-              run: ./scripts/build -p .
+              run: |
+                echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u matteodelabre --password-stdin
+                ./scripts/build -p .
