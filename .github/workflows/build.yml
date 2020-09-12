@@ -5,7 +5,7 @@ on:
             - master
 jobs:
     build:
-        name: Build and publish images
+        name: Publish latest
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the Git repository

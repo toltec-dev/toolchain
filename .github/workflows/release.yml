@@ -1,0 +1,14 @@
+name: release
+on:
+    release
+jobs:
+    release:
+        name: Publish a release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the Git repository
+              uses: actions/checkout@v2
+            - name: Build and publish images
+              run: |
+                version="$(echo "${{ github.ref }}" | cut -d / -f 3)"
+                ./scripts/build . "$version"

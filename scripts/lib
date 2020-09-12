@@ -26,5 +26,5 @@ status() {
 # $1 - Name of the image
 # $2 - Version of the image
 image-name() {
-    echo "ghcr.io/toltec-dev/$1:${2-latest}"
+    echo "ghcr.io/toltec-dev/$1:${2:-latest}"
 }

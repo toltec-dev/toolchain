@@ -3,9 +3,10 @@
 set -e
 source "${BASH_SOURCE%/*}"/lib
 
-usage="$0 [OPTION]... IMAGESDIR
+usage="$0 [OPTION]... IMAGESDIR [VERSION]
 
 Build the Docker images under the IMAGESDIR directory.
+Label each built image with the given VERSION number (default: latest).
 The build takes advantage of any reusable layer from previously built images.
 
 Options:
@@ -34,26 +35,27 @@ if [[ -n $helpflag ]]; then
 fi
 
 if [[ $# -eq 0 ]]; then
-    error "Missing IMAGESDIR and arguments. Use the -h flag for more information."
+    error "Missing IMAGESDIR arguments. Use the -h flag for more information."
 fi
 
-if [[ $# -gt 1 ]]; then
+if [[ $# -gt 2 ]]; then
     error "Extraneous arguments. Use the -h flag for more information."
 fi
 
 imagesdir="$1"
+version="$2"
 
 # Enable BuildKit for better cache behavior
 # See <https://docs.docker.com/engine/reference/builder/#buildkit>
 export DOCKER_BUILDKIT=1
 
 docker-build() {
-    tag="$(image-name "$1")"
+    tag="$(image-name "$1" "$version")"
     status "Building image '$tag'"
     docker image build \
         --build-arg BUILDKIT_INLINE_CACHE=1 \
-        --build-arg BASE="$(image-name base)" \
-        --cache-from "$tag" \
+        --build-arg BASE="$(image-name base "$version")" \
+        --cache-from "$(image-name "$1")" \
         --tag "$tag" .
 
     if [[ -n $publishflag ]]; then
