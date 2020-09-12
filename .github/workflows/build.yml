@@ -1,0 +1,14 @@
+name: build
+on:
+    push:
+        branches:
+            - master
+jobs:
+    build:
+        name: Build and publish images
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the Git repository
+              uses: actions/checkout@v2
+            - name: Build and publish images
+              run: ./scripts/build -p .
