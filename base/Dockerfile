@@ -5,6 +5,7 @@ FROM debian:buster
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
+        bsdtar \
         build-essential \
         ca-certificates \
         curl \
