@@ -1,0 +1,76 @@
+diff --git a/src/basic/missing.h b/src/basic/missing.h
+index 1280e6c410..6104d57392 100644
+--- a/src/basic/missing.h
++++ b/src/basic/missing.h
+@@ -517,46 +517,6 @@ struct btrfs_ioctl_quota_ctl_args {
+ #define BPF_FS_MAGIC 0xcafe4a11
+ #endif
+ 
+-#ifndef MS_MOVE
+-#define MS_MOVE 8192
+-#endif
+-
+-#ifndef MS_REC
+-#define MS_REC 16384
+-#endif
+-
+-#ifndef MS_PRIVATE
+-#define MS_PRIVATE      (1<<18)
+-#endif
+-
+-#ifndef MS_REC
+-#define MS_REC          (1<<19)
+-#endif
+-
+-#ifndef MS_SHARED
+-#define MS_SHARED       (1<<20)
+-#endif
+-
+-#ifndef MS_RELATIME
+-#define MS_RELATIME     (1<<21)
+-#endif
+-
+-#ifndef MS_KERNMOUNT
+-#define MS_KERNMOUNT    (1<<22)
+-#endif
+-
+-#ifndef MS_I_VERSION
+-#define MS_I_VERSION    (1<<23)
+-#endif
+-
+-#ifndef MS_STRICTATIME
+-#define MS_STRICTATIME  (1<<24)
+-#endif
+-
+-#ifndef MS_LAZYTIME
+-#define MS_LAZYTIME     (1<<25)
+-#endif
+-
+ #ifndef SCM_SECURITY
+ #define SCM_SECURITY 0x03
+ #endif
+diff --git a/src/core/load-fragment.c b/src/core/load-fragment.c
+index 00408c4b84..b9985eea9d 100644
+--- a/src/core/load-fragment.c
++++ b/src/core/load-fragment.c
+@@ -21,7 +21,6 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <linux/fs.h>
+ #include <linux/oom.h>
+ #if HAVE_SECCOMP
+ #include <seccomp.h>
+diff --git a/src/shared/bus-unit-util.c b/src/shared/bus-unit-util.c
+index bc77c3abdb..cfb1579511 100644
+--- a/src/shared/bus-unit-util.c
++++ b/src/shared/bus-unit-util.c
+@@ -52,6 +52,8 @@
+ #include "utf8.h"
+ #include "util.h"
+ 
++#include <sys/mount.h>
++
+ int bus_parse_unit_info(sd_bus_message *message, UnitInfo *u) {
+         assert(message);
+         assert(u);

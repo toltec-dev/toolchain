@@ -1,0 +1,17 @@
+[properties]
+sys_root = '/opt/x-tools/arm-remarkable-linux-gnueabihf/arm-remarkable-linux-gnueabihf/sysroot'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv7'
+endian = 'little'
+
+[binaries]
+c = 'arm-linux-gnueabihf-gcc'
+cpp = 'arm-linux-gnueabihf-g++'
+c_ld = 'arm-linux-gnueabihf-ld'
+cpp_ld = 'arm-linux-gnueabihf-ld'
+ar = 'arm-linux-gnueabihf-ar'
+strip = 'arm-linux-gnueabihf-strip'
+pkgconfig = 'pkg-config'
