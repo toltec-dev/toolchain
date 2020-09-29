@@ -7,6 +7,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
+        cmake \
         curl \
         meson \
         pkg-config \
@@ -70,8 +71,8 @@ ENV ARCH=arm \
     PKG_CONFIG_LIBDIR="/opt/x-tools/arm-remarkable-linux-gnueabihf/arm-remarkable-linux-gnueabihf/sysroot/usr/lib/pkgconfig" \
     SYSROOT="/opt/x-tools/arm-remarkable-linux-gnueabihf/arm-remarkable-linux-gnueabihf/sysroot"
 
-COPY meson/arm-linux-gnueabihf \
-    /usr/share/meson/cross/arm-linux-gnueabihf
+COPY meson/arm-linux-gnueabihf /usr/share/meson/cross/arm-linux-gnueabihf
+COPY cmake/arm-linux-gnueabihf.cmake /usr/share/cmake/arm-linux-gnueabihf.cmake
 
 # Build libcap 2.25 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -225,5 +226,31 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         libtool \
         python \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Build dlib 19.21
+RUN export DEBIAN_FRONTEND=noninteractive \
+    # Install build dependencies
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        cmake \
+        git \
+    # Build static zlib
+    && cd /root \
+    && git clone https://github.com/davisking/dlib \
+    && cd dlib \
+    && git checkout 9117bd784328d9ac40ffa1f9cf487633a8a715d7 \
+    && mkdir build \
+    && cd build \
+    && cmake -DCMAKE_TOOLCHAIN_FILE="/usr/share/cmake/$CHOST.cmake" .. \
+    && cmake --build . \
+    && cmake --install . --prefix "$SYSROOT/usr" \
+    && cd .. \
+    # Clean up
+    && rm -rf dlib \
+    && apt-get autoremove -y \
+        cmake \
+        git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
