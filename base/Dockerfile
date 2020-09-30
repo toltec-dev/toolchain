@@ -236,17 +236,17 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y --no-install-recommends \
         cmake \
         git \
-    # Build static zlib
+    # Build dlib
     && cd /root \
     && git clone https://github.com/davisking/dlib \
     && cd dlib \
     && git checkout 9117bd784328d9ac40ffa1f9cf487633a8a715d7 \
     && mkdir build \
     && cd build \
-    && cmake -DCMAKE_TOOLCHAIN_FILE="/usr/share/cmake/$CHOST.cmake" .. \
-    && cmake --build . \
-    && cmake --install . --prefix "$SYSROOT/usr" \
-    && cd .. \
+    && cmake -DCMAKE_TOOLCHAIN_FILE="/usr/share/cmake/$CHOST.cmake" \
+             -DCMAKE_INSTALL_PREFIX="$SYSROOT/usr" .. \
+    && cmake --build . --target install \
+    && cd ../.. \
     # Clean up
     && rm -rf dlib \
     && apt-get autoremove -y \
