@@ -57,6 +57,10 @@ It is used to provide a consistent environment for building [Toltec](https://git
 
 ### Changelog
 
+#### v1.2.1
+
+* Fix missing CMake from final images.
+
 #### v1.2
 
 * Add toolchain configuration for CMake projects to the `base` image.
