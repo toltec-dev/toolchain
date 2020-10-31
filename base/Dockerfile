@@ -234,7 +234,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        cmake \
         git \
     # Build dlib
     && cd /root \
@@ -250,7 +249,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Clean up
     && rm -rf dlib \
     && apt-get autoremove -y \
-        cmake \
         git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
