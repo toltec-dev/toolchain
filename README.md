@@ -57,6 +57,10 @@ It is used to provide a consistent environment for building [Toltec](https://git
 
 ### Changelog
 
+#### v1.2.2
+
+* Fix wrong `libqsgepaper.a` and `epframebuffer.h` files in the `qt` image due to outdated link.
+
 #### v1.2.1
 
 * Fix missing CMake from final images.
