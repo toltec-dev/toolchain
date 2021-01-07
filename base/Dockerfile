@@ -1,5 +1,7 @@
 # Essential cross-compiling build tools for the reMarkable
 FROM debian:buster
+ARG NGCONFIG="arm-remarkable-linux-gnueabihf"
+ARG CHOST="arm-linux-gnueabihf"
 
 # Install common building tools
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -15,7 +17,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 # Build crosstool-ng 1.24.0 and use it to build the toolchain
-COPY crosstool-ng /arm-remarkable-linux-gnueabihf
+COPY crosstool-ng "/$NGCONFIG"
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -36,18 +38,18 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && git clone https://github.com/crosstool-ng/crosstool-ng \
     && cd crosstool-ng \
     && git checkout b2151f1dba2b20c310adfe7198e461ec4469172b \
-    && mv /arm-remarkable-linux-gnueabihf samples \
+    && mv "/$NGCONFIG" samples \
     && ./bootstrap \
     && ./configure --enable-local \
     && make \
     # Build the toolchain and install it in the following folder
     && export CT_PREFIX="/opt/x-tools" \
-    && ./ct-ng arm-remarkable-linux-gnueabihf \
+    && ./ct-ng "$NGCONFIG" \
     && ./ct-ng build \
     && cd .. \
     # Clean up
     && rm -rf crosstool-ng \
-    && rm /opt/x-tools/arm-remarkable-linux-gnueabihf/build.log.bz2 \
+    && rm "/opt/x-tools/$NGCONFIG/build.log.bz2" \
     && apt-get autoremove -y \
         autoconf \
         bison \
@@ -63,16 +65,27 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Add cross-compiling tools to PATH and configurations for common build systems
+# Configure the environment for cross-compiling
 ENV ARCH=arm \
-    CHOST="arm-linux-gnueabihf" \
-    CROSS_COMPILE="arm-linux-gnueabihf-" \
-    PATH="$PATH:/opt/x-tools/arm-remarkable-linux-gnueabihf/bin" \
-    PKG_CONFIG_LIBDIR="/opt/x-tools/arm-remarkable-linux-gnueabihf/arm-remarkable-linux-gnueabihf/sysroot/usr/lib/pkgconfig" \
-    SYSROOT="/opt/x-tools/arm-remarkable-linux-gnueabihf/arm-remarkable-linux-gnueabihf/sysroot"
+    AR="$CHOST-ar" \
+    AS="$CHOST-as" \
+    CC="$CHOST-gcc" \
+    CHOST="$CHOST" \
+    CROSS_COMPILE="$CHOST-" \
+    CXX="$CHOST-g++" \
+    GDB="$CHOST-gdb" \
+    NM="$CHOST-objcopy" \
+    OBJCOPY="$CHOST-objcopy" \
+    OBJDUMP="$CHOST-objdump" \
+    PATH="$PATH:/opt/x-tools/$NGCONFIG/bin" \
+    PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig" \
+    RANLIB="$CHOST-ranlib" \
+    STRIP="$CHOST-strip" \
+    SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
+    TARGET_PREFIX="$CHOST"
 
-COPY meson/arm-linux-gnueabihf /usr/share/meson/cross/arm-linux-gnueabihf
-COPY cmake/arm-linux-gnueabihf.cmake /usr/share/cmake/arm-linux-gnueabihf.cmake
+COPY "meson/$CHOST" "/usr/share/meson/cross/$CHOST"
+COPY "cmake/$CHOST.cmake" "/usr/share/cmake/$CHOST.cmake"
 
 # Build libcap 2.25 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -252,3 +265,16 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Add more cross compling envs
+ENV CC=${CROSS_COMPILE}gcc \
+    CXX=${CROSS_COMPILE}g++ \
+    STRIP=${CROSS_COMPILE}strip \
+    AR=${CROSS_COMPILE}ar \
+    RANLIB=${CROSS_COMPILE}ranlib \
+    OBJDUMP=${CROSS_COMPILE}objdump \
+    OBJCOPY=${CROSS_COMPILE}objcopy \
+    GDB=${CROSS_COMPILE}gdb \
+    NM=${CROSS_COMPILE}objcopy \
+    AS=${CROSS_COMPILE}as \
+    TARGET_PREFIX=$CROSS_COMPILE
