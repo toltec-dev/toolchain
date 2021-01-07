@@ -252,3 +252,17 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Add more cross compiling info
+ENV ARCH=arm \
+    CC=${CROSS_COMPILE}gcc \
+    CXX=${CROSS_COMPILE}g++ \
+    STRIP=${CROSS_COMPILE}strip \
+    AR=${CROSS_COMPILE}ar \
+    RANLIB=${CROSS_COMPILE}ranlib \
+    OBJDUMP=${CROSS_COMPILE}objdump \
+    OBJCOPY=${CROSS_COMPILE}objcopy \
+    GDB=${CROSS_COMPILE}gdb \
+    NM=${CROSS_COMPILE}objcopy \
+    AS=${CROSS_COMPILE}as \
+    TARGET_PREFIX=$CROSS_COMPILE
