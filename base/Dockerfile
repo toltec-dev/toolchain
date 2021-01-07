@@ -253,9 +253,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Add more cross compiling info
-ENV ARCH=arm \
-    CC=${CROSS_COMPILE}gcc \
+# Add more cross compling envs
+ENV CC=${CROSS_COMPILE}gcc \
     CXX=${CROSS_COMPILE}g++ \
     STRIP=${CROSS_COMPILE}strip \
     AR=${CROSS_COMPILE}ar \
