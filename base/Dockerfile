@@ -65,6 +65,42 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Build Opkg for installing and removing ipk packages in the sysroot
+COPY opkg /etc/opkg
+RUN export DEBIAN_FRONTEND=noninteractive \
+    # Install build dependencies
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        automake \
+        git \
+        libarchive-dev \
+        libcurl4-gnutls-dev \
+        libgpgme-dev \
+        libssl-dev \
+        libtool-bin \
+    && cd /root \
+    && git clone https://git.yoctoproject.org/git/opkg \
+    && cd opkg \
+    && git checkout 532bdf544ae598aa68a8c6dfd05c280d2a04e837 \
+    && ./autogen.sh \
+    && ./configure \
+        --enable-sha256 \
+        --prefix=/ \
+        --exec-prefix=/usr \
+    && make \
+    && make install \
+    && cd .. \
+    # Clean up
+    && rm -rf crosstool-ng \
+    && apt-get autoremove -y \
+        automake \
+        git \
+        libarchive-dev \
+        libssl-dev \
+        libtool-bin \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Configure the environment for cross-compiling
 ENV ARCH=arm \
     CHOST="$CHOST" \
@@ -74,6 +110,7 @@ ENV ARCH=arm \
     SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
     TARGET_PREFIX="$CHOST"
 
+# Add cross-compiling configuration for common build systems
 COPY "meson/$CHOST" "/usr/share/meson/cross/$CHOST"
 COPY "cmake/$CHOST.cmake" "/usr/share/cmake/$CHOST.cmake"
 
