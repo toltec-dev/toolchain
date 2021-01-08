@@ -67,20 +67,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Configure the environment for cross-compiling
 ENV ARCH=arm \
-    AR="$CHOST-ar" \
-    AS="$CHOST-as" \
-    CC="$CHOST-gcc" \
     CHOST="$CHOST" \
     CROSS_COMPILE="$CHOST-" \
-    CXX="$CHOST-g++" \
-    GDB="$CHOST-gdb" \
-    NM="$CHOST-objcopy" \
-    OBJCOPY="$CHOST-objcopy" \
-    OBJDUMP="$CHOST-objdump" \
     PATH="$PATH:/opt/x-tools/$NGCONFIG/bin" \
     PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig" \
-    RANLIB="$CHOST-ranlib" \
-    STRIP="$CHOST-strip" \
     SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
     TARGET_PREFIX="$CHOST"
 
