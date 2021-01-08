@@ -91,7 +91,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && make install \
     && cd .. \
     # Clean up
-    && rm -rf crosstool-ng \
+    && rm -rf opkg \
     && apt-get autoremove -y \
         automake \
         git \
