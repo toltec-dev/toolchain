@@ -49,6 +49,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf crosstool-ng \
+    && rm "/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/libexpat.la" \
     && rm "/opt/x-tools/$NGCONFIG/build.log.bz2" \
     && apt-get autoremove -y \
         autoconf \
