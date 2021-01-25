@@ -49,7 +49,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf crosstool-ng \
-    && find "/opt/x-tools/$NGCONFIG/$NGCONFIG" -type f -name "*.la" \
+    && find "/opt/x-tools/$NGCONFIG/$NGCONFIG" -type l,f -name "*.la" \
         | xargs --no-run-if-empty rm \
     && rm "/opt/x-tools/$NGCONFIG/build.log.bz2" \
     && apt-get autoremove -y \
@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf opkg \
+    && rm /usr/lib/libopkg.la \
     && apt-get autoremove -y \
         automake \
         git \
@@ -108,7 +109,10 @@ ENV ARCH=arm \
     CHOST="$CHOST" \
     CROSS_COMPILE="$CHOST-" \
     PATH="$PATH:/opt/x-tools/$NGCONFIG/bin" \
-    PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig" \
+    PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/lib/pkgconfig" \
+    PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
+    PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
+    PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
     SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
     TARGET_PREFIX="$CHOST"
 
@@ -134,12 +138,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         AR="${CROSS_COMPILE}ar" \
         CC="${CROSS_COMPILE}gcc" \
         RANLIB="${CROSS_COMPILE}ranlib" \
-        lib="lib" \
-        prefix="$SYSROOT/usr" \
+        lib=lib \
     && make install \
         RAISE_SETFCAP=no \
-        lib="lib" \
-        prefix="$SYSROOT/usr" \
+        lib=lib \
+        DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
     && rm -rf libcap \
@@ -165,14 +168,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd util-linux \
     && git checkout 475ecbad15943d6831fc508ce72016d581763b2b \
     && ./autogen.sh \
-    && ./configure \
-        --prefix="$SYSROOT/usr" \
-        --host="$CHOST" \
+    && ./configure --host="$CHOST" \
     && make LDFLAGS="-Wl,-rpath-link,.libs" \
-    && make install \
+    && make install DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
     && rm -rf util-linux \
+    && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm \
     && apt-get autoremove -y \
         automake \
         autopoint \
@@ -212,13 +214,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm /systemd-237-5547c12.patch \
     && ./configure \
         --buildtype=release \
-        --strip \
         --cross-file="$CHOST" \
-        --prefix="$SYSROOT/usr" \
-        --libdir="lib" \
-        -Drootprefix="$SYSROOT" \
+        --prefix=/ \
+        -Drootprefix=/ \
+        --datadir=usr/share \
+        --includedir=usr/include \
+        --libdir=lib \
     && ninja -C build \
-    && DESTDIR="/" ninja -C build install \
+    && DESTDIR="$SYSROOT" ninja -C build install \
     && cd .. \
     # Clean up
     && rm -rf systemd \
@@ -246,23 +249,22 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && git checkout cacf7f1d4e3d44d871b605da3b647f07d718623f \
     && CC="${CROSS_COMPILE}gcc" CFLAGS=-fPIC ./configure \
         --static \
-        --prefix="$SYSROOT/usr" \
+        --prefix=/usr \
     && make \
-    && make install \
+    && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Build dynamic libpng
     && git clone git://git.code.sf.net/p/libpng/code libpng \
     && cd libpng \
     && git checkout b78804f9a2568b270ebd30eca954ef7447ba92f7 \
     && ./autogen.sh \
-    && ./configure \
-        --prefix="$SYSROOT/usr" \
-        --host="$CHOST" \
+    && ./configure --prefix=/usr --host="$CHOST" \
     && make \
-    && make install \
+    && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Clean up
     && rm -rf zlib libpng \
+    && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm \
     && apt-get autoremove -y \
         automake \
         git \
