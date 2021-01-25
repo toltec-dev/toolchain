@@ -111,8 +111,6 @@ ENV ARCH=arm \
     PATH="$PATH:/opt/x-tools/$NGCONFIG/bin" \
     PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/lib/pkgconfig" \
     PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
-    PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
-    PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
     SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
     TARGET_PREFIX="$CHOST"
 
