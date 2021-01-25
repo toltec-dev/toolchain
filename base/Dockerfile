@@ -270,27 +270,3 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         python \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Build dlib 19.21
-RUN export DEBIAN_FRONTEND=noninteractive \
-    # Install build dependencies
-    && apt-get update -y \
-    && apt-get install -y --no-install-recommends \
-        git \
-    # Build dlib
-    && cd /root \
-    && git clone https://github.com/davisking/dlib \
-    && cd dlib \
-    && git checkout 9117bd784328d9ac40ffa1f9cf487633a8a715d7 \
-    && mkdir build \
-    && cd build \
-    && cmake -DCMAKE_TOOLCHAIN_FILE="/usr/share/cmake/$CHOST.cmake" \
-             -DCMAKE_INSTALL_PREFIX="$SYSROOT/usr" .. \
-    && cmake --build . --target install \
-    && cd ../.. \
-    # Clean up
-    && rm -rf dlib \
-    && apt-get autoremove -y \
-        git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
