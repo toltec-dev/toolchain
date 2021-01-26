@@ -29,22 +29,20 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && ../qt5/configure \
         -confirm-license \
         -opensource \
-        # Place armhf libraries in the cross-compiling toolchain folder
-        -prefix "$SYSROOT/usr" \
+        -prefix /usr \
         -xplatform linux-arm-gnueabihf-g++ \
-        # Place x86 binaries (e.g. qmake) and libraries in the normal folder
         -hostprefix /usr \
         -platform linux-g++ \
-        # Disable unused features
         -nomake examples \
         -nomake tests  \
         -no-opengl \
         -reduce-exports \
     && make \
-    && make install \
+    && make INSTALL_ROOT="$SYSROOT" install \
     && cd .. \
     # Clean up
     && rm -rf qt5 qt5-build \
+    && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm \
     && apt-get autoremove -y \
         git \
         python \
