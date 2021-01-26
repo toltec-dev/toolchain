@@ -10,7 +10,7 @@ Name                | Location   | Purpose
 ------------------- | ---------- | -------
 Build system root   | `/`        | A basic Debian install which provides the CMake and Meson build systems, the `opkg` package manager for installing packages in the host system root, and other useful building tools.
 Cross-compiler root | `/opt/x-tools/arm-remarkable-linux-gnueabihf/bin` | Provides a build of GCC which targets the ARMv7 architecture. This directory is in the image’s `$PATH` by default.
-Host system root    | `$SYSROOT` | Provides a set of libraries similar to the one available on the reMarkable, compiled for the ARMv7 architecture. Included libraries are: glibc 2.27, Linux 4.9 headers, libcap 2.25, util-linux 2.32, libsystemd 237, zlib 1.2.11, libpng 1.6.34, and dlib 19.21.
+Host system root    | `$SYSROOT` | Provides a set of libraries similar to the one available on the reMarkable, compiled for the ARMv7 architecture. Included libraries are: glibc 2.27, Linux 4.9 headers, libcap 2.25, util-linux 2.32, libsystemd 237, zlib 1.2.11, libpng 1.6.34, and libevdev 1.5.8
 
 ### Images
 
@@ -23,11 +23,19 @@ Name | Purpose
 
 ### Why not use the reMarkable-provided toolchain?
 
-reMarkable does [provide an OpenEmbedded-Core-based toolchain](https://remarkable.engineering/oecore-x86_64-cortexa9hf-neon-toolchain-zero-gravitas-1.8-23.9.2019.sh) which can be used for cross-compiling binaries targeting the tablet.
+reMarkable does [provide an OpenEmbedded-Core-based toolchain](https://web.archive.org/web/20201129102245/https://remarkable.engineering/oecore-x86_64-cortexa9hf-neon-toolchain-zero-gravitas-1.8-23.9.2019.sh) which can be used for cross-compiling binaries targeting the tablet.
 However, no way of building this toolchain from source is provided, which limits the possibilities of evolving the build environment.
 Building the toolchain from source also allows us to know that the binaries have not been tampered with compared to their source.
 
 ### Changelog
+
+#### v1.3 — 2021-01-26
+
+* Remove dlib from the `base` image.
+* Add libevdev to the `base` image.
+* Cleanup all remaining `*.la` files from the host system root.
+* Fix systemd install location in the host system root.
+* Remove references to the system root location in the host system root’s libs.
 
 #### v1.2.2 — 2021-01-06
 
