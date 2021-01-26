@@ -3,6 +3,7 @@ ARG BASE
 FROM $BASE
 
 # Build Qt 5.11.3 targeting armhf
+COPY linux-arm-remarkable-g++ /linux-arm-remarkable-g++
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -15,11 +16,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd qt5 \
     && git checkout 1deea3debce6bfd0fd45545b3a8e1de80380a9a5 \
     && perl init-repository --module-subset=default,-qtwebengine \
-    # Create a qmake configuration for the current setup
-    && cp -R qtbase/mkspecs/linux-arm-gnueabi-g++ \
-             qtbase/mkspecs/linux-arm-gnueabihf-g++ \
-    && sed -i 's/arm-linux-gnueabi-/arm-linux-gnueabihf-/' \
-              qtbase/mkspecs/linux-arm-gnueabihf-g++/qmake.conf \
+    # Setup reMarkable mkspec
+    && mv /linux-arm-remarkable-g++ qtbase/mkspecs/devices \
     # Fix compiling error of old Qt with recent GCC
     # (see <https://bugreports.qt.io/browse/QTBUG-74196>)
     && find . -type f \( -name "*.cpp" -o -name "*.h" \) -print0 | xargs -0 sed -ri 's/asm volatile ?\(/asm (/g' \
@@ -30,15 +28,16 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         -confirm-license \
         -opensource \
         -prefix /usr \
-        -xplatform linux-arm-gnueabihf-g++ \
+        -sysroot "$SYSROOT" \
         -hostprefix /usr \
-        -platform linux-g++ \
+        -device linux-arm-remarkable-g++ \
+        -device-option CROSS_COMPILE="$CROSS_COMPILE" \
         -nomake examples \
         -nomake tests  \
         -no-opengl \
         -reduce-exports \
     && make \
-    && make INSTALL_ROOT="$SYSROOT" install \
+    && make install \
     && cd .. \
     # Clean up
     && rm -rf qt5 qt5-build \
