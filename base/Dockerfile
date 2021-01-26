@@ -270,3 +270,22 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         python \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Build libevdev 1.5.8 targeting armhf
+RUN export DEBIAN_FRONTEND=noninteractive \
+    # Build libevdev
+    && cd /root \
+    && mkdir libevdev \
+    && cd libevdev \
+    && curl https://www.freedesktop.org/software/libevdev/libevdev-1.5.8.tar.xz -o libevdev.tar.xz \
+    && echo "6083d81e46609da8ba80cb826c02d9080764a6dec33c8267ccb7e158833d4c6d  libevdev.tar.xz" > sha256sums \
+    && sha256sum -c sha256sums \
+    && tar --strip-components=1 -xf libevdev.tar.xz \
+    && rm libevdev.tar.xz sha256sums \
+    && ./configure --prefix=/usr --host="$CHOST" \
+    && make \
+    && DESTDIR="$SYSROOT" make install \
+    && cd .. \
+    # Clean up
+    && rm -rf libevdev \
+    && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm
