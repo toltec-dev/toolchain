@@ -1,6 +1,6 @@
 # Full Qt toolchain for the reMarkable
-ARG BASE
-FROM $BASE
+ARG FROM
+FROM $FROM
 
 # Build Qt 5.11.3 targeting armhf
 COPY linux-arm-remarkable-g++ /linux-arm-remarkable-g++

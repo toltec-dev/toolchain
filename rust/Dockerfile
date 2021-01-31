@@ -1,6 +1,6 @@
 # Rust nightly targeting the armv7-hf architecture
-ARG BASE
-FROM $BASE
+ARG FROM
+FROM $FROM
 
 # Install rustup
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -q \

@@ -1,6 +1,6 @@
 # Python distribution
-ARG BASE
-FROM $BASE
+ARG FROM
+FROM $FROM
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \

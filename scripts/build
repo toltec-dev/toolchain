@@ -50,33 +50,38 @@ version="$2"
 export DOCKER_BUILDKIT=1
 
 docker-build() {
-    tag="$(image-name "$1" "$version")"
-    status "Building image '$tag'"
+    from="$(image-name "$1" "$version")"
+    target="$(image-name "$2" "$version")"
+    status "Building image '$target'"
     docker image build \
         --build-arg BUILDKIT_INLINE_CACHE=1 \
-        --build-arg BASE="$(image-name base "$version")" \
-        --cache-from "$(image-name "$1")" \
-        --tag "$tag" .
+        --build-arg FROM="$from" \
+        --cache-from "$(image-name "$2")" \
+        --tag "$target" .
 
     if [[ -n $publishflag ]]; then
-        docker image push "$tag"
+        docker image push "$target"
     fi
 }
 
-pushd "$imagesdir"/base
-docker-build base
+pushd "$imagesdir"/toolchain
+docker-build toolchain toolchain
 popd
 
-for imagepath in "$imagesdir"/*; do
-    if [[ -d $imagepath ]] && [[ -f $imagepath/Dockerfile ]]; then
-        imagename="$(basename "$imagepath")"
+pushd "$imagesdir"/base
+docker-build toolchain base
+popd
 
-        if [[ $imagename != base ]]; then
-            pushd "$imagepath"
-            docker-build "$imagename"
-            popd
-        fi
-    fi
-done
+pushd "$imagesdir"/python
+docker-build base python
+popd
+
+pushd "$imagesdir"/qt
+docker-build base qt
+popd
+
+pushd "$imagesdir"/rust
+docker-build base rust
+popd
 
 status "Done"
