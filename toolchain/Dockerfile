@@ -68,7 +68,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 # Build Opkg for installing and removing ipk packages in the sysroot
-COPY opkg /etc/opkg
+COPY opkg /opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/etc/opkg
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
