@@ -30,6 +30,10 @@ Building the toolchain from source also allows us to know that the binaries have
 
 ### Changelog
 
+#### v1.3.2 — 2021-02-04
+
+* Fix incorrect `opkg` root installation dir.
+
 #### v1.3.1 — 2021-01-31
 
 * Create the `toolchain` image which does not contain the pre-installed reMarkable libraries.
