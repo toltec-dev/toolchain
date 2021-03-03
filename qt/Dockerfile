@@ -34,6 +34,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         -device-option CROSS_COMPILE="$CROSS_COMPILE" \
         -nomake examples \
         -nomake tests  \
+        -no-rpath \
         -no-opengl \
         -reduce-exports \
     && make \
