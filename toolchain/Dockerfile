@@ -68,7 +68,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 # Build Opkg for installing and removing ipk packages in the sysroot
-COPY opkg /opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/etc/opkg
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -113,6 +112,14 @@ ENV ARCH=arm \
     PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
     SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
     TARGET_PREFIX="$CHOST"
+
+# Configure Opkg
+COPY opkg /opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/etc/opkg
+RUN mv /usr/bin/opkg /usr/bin/opkg-bin \
+    && printf "#!/bin/bash\n/usr/bin/opkg-bin --offline-root \"$SYSROOT\" --host-cache-dir \"\$@\"\n" > /usr/bin/opkg \
+    && chmod +x /usr/bin/opkg \
+    && mkdir /repo \
+    && touch /repo/Packages.gz
 
 # Add cross-compiling configuration for common build systems
 COPY "meson/$CHOST" "/usr/share/meson/cross/$CHOST"
