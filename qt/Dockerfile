@@ -15,7 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && git clone https://code.qt.io/qt/qt5.git \
     && cd qt5 \
     && git checkout 1deea3debce6bfd0fd45545b3a8e1de80380a9a5 \
-    && perl init-repository --module-subset=default,-qtwebengine \
+    && perl init-repository --module-subset=essential,-qtmultimedia,-qttools,qtgraphicaleffects,qtquickcontrols2,qtsvg,qtwebsockets \
     # Setup reMarkable mkspec
     && mv /linux-arm-remarkable-g++ qtbase/mkspecs/devices \
     # Fix compiling error of old Qt with recent GCC
@@ -36,6 +36,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         -nomake tests  \
         -no-rpath \
         -no-opengl \
+        -no-widgets \
+        -no-feature-sql \
         -reduce-exports \
     && make \
     && make install \
