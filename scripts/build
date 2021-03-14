@@ -72,6 +72,10 @@ pushd "$imagesdir"/base
 docker-build toolchain base
 popd
 
+pushd "$imagesdir"/golang
+docker-build base golang
+popd
+
 pushd "$imagesdir"/python
 docker-build base python
 popd

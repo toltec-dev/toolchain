@@ -25,6 +25,7 @@ Name | Contents
 [qt](https://github.com/orgs/toltec-dev/packages/container/package/qt) | Adds Qt 5.11.3 to the host system root, including the closed-source libqsgepaper plugin. Includes the `qmake` build tool in the build system root.
 [rust](https://github.com/orgs/toltec-dev/packages/container/package/rust) | Adds Nightly Rust configured to use the ARMv7 cross-compiler to the build system root.
 [python](https://github.com/orgs/toltec-dev/packages/container/package/python) | Adds a Python 3.7.3 distribution to the build system root.
+[golang](https://github.com/orgs/toltec-dev/packages/container/package/golang) | Adds a Go 1.16.2 distribution to the build system root.
 
 ### Installing Opkg packages
 
