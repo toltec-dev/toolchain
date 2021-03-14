@@ -4,7 +4,7 @@ FROM $FROM
 
 # Install rustup
 RUN cd /root \
-    && curl --proto '=https' --tlsv1.2 -sSf https://golang.org/dl/go1.16.2.linux-amd64.tar.gz \
+    && curl --proto '=https' --tlsv1.2 -sSf https://dl.google.com/go/go1.16.2.linux-amd64.tar.gz \
     -o "go1.16.2.linux-amd64.tar.gz" \
     && tar -C /usr/local -xzf "go1.16.2.linux-amd64.tar.gz" \
     && mkdir -p ./go
