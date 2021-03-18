@@ -16,7 +16,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Build crosstool-ng 1.24.0 and use it to build the toolchain
+# Build latest crosstool-ng and use it to build the toolchain
 COPY crosstool-ng "/$NGCONFIG"
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
@@ -37,7 +37,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://github.com/crosstool-ng/crosstool-ng \
     && cd crosstool-ng \
-    && git checkout b2151f1dba2b20c310adfe7198e461ec4469172b \
+    && git checkout 6729a76d0c8ecd5d3f347ec31cc1c093b8e20b8e \
     && mv "/$NGCONFIG" samples \
     && ./bootstrap \
     && ./configure --enable-local \
