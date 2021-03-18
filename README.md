@@ -35,6 +35,10 @@ Opkg stores its cache in `/var/cache/opkg`.
 
 ### Changelog
 
+#### v1.5 — 2021-03-18
+
+* Create the `golang` image.
+
 #### v1.4 — 2021-03-04
 
 * Automatically set the `offline-root` and `host-cache-dir` flags when invoking `opkg`.
