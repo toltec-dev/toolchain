@@ -2,7 +2,7 @@
 ARG FROM
 FROM $FROM
 
-# Build Qt 5.11.3 targeting armhf
+# Build Qt 5.15.1 targeting armhf
 COPY linux-arm-remarkable-g++ /linux-arm-remarkable-g++
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
@@ -14,13 +14,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://code.qt.io/qt/qt5.git \
     && cd qt5 \
-    && git checkout 1deea3debce6bfd0fd45545b3a8e1de80380a9a5 \
+    && git checkout dd11f01de7416b650b58c13e18146533d764477c \
     && perl init-repository --module-subset=essential,-qtmultimedia,-qttools,qtgraphicaleffects,qtquickcontrols2,qtsvg,qtwebsockets \
     # Setup reMarkable mkspec
     && mv /linux-arm-remarkable-g++ qtbase/mkspecs/devices \
-    # Fix compiling error of old Qt with recent GCC
-    # (see <https://bugreports.qt.io/browse/QTBUG-74196>)
-    && find . -type f \( -name "*.cpp" -o -name "*.h" \) -print0 | xargs -0 sed -ri 's/asm volatile ?\(/asm (/g' \
     && cd .. \
     && mkdir qt5-build \
     && cd qt5-build \

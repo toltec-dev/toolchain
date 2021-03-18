@@ -2,7 +2,7 @@
 ARG FROM
 FROM $FROM
 
-# Build libcap 2.25 targeting armhf
+# Build libcap 2.32 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -12,7 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone git://git.kernel.org/pub/scm/libs/libcap/libcap.git \
     && cd libcap \
-    && git checkout 1048a44a4a6eecb6d43d94913b0bd065ea6d0601 \
+    && git checkout 13227f9b2f2b2f222e8022e19bd46db6f6f898c6 \
     && sed -i "s/^BUILD_GPERF/#\0/" Make.Rules \
     # Compile binaries that run on the build machine using normal GCC
     && sed -i "s/^\(BUILD_CC\) := \$(CC)/\1 := gcc/" Make.Rules \
@@ -33,7 +33,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Build util-linux 2.32 targeting armhf
+# Build util-linux 2.36.1 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -48,7 +48,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://github.com/karelzak/util-linux.git \
     && cd util-linux \
-    && git checkout 475ecbad15943d6831fc508ce72016d581763b2b \
+    && git checkout 35c07c82be1ddc3b1c40f061b59008cac6405499 \
     && ./autogen.sh \
     && ./configure --host="$CHOST" \
     && make LDFLAGS="-Wl,-rpath-link,.libs" \
@@ -67,8 +67,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Build systemd 237 targeting armhf
-COPY patch/*.patch /
+# Build systemd 244 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -81,19 +80,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://github.com/systemd/systemd.git \
     && cd systemd \
-    && git checkout 46659f7deb962f55c728e70597e37c2a3ab6326d \
-    # Rename 'debug' build option to 'debug-extra'
-    # (see <https://github.com/systemd/systemd/issues/9883>)
-    && sed -i "s/\(get_option('debug\)'/\1-extra'/" meson.build \
-    && sed -i "s/\(option('debug\)'/\1-extra'/" meson_options.txt \
-    # Patch fixing conflicts on MS_* macros
-    # (see <https://github.com/systemd/systemd/issues/8507>)
-    && git apply /systemd-237-eb50b6d.patch \
-    && rm /systemd-237-eb50b6d.patch \
-    # Patch fixing format truncation errors
-    # (see <https://github.com/systemd/systemd/pull/8250>)
-    && git apply /systemd-237-5547c12.patch \
-    && rm /systemd-237-5547c12.patch \
+    && git checkout db9c5ae73e23d816e2df2a3e10a9a2a60b5b3ed7 \
     && ./configure \
         --buildtype=release \
         --cross-file="$CHOST" \
@@ -115,7 +102,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Build zlib 1.2.11 and libpng 1.6.34 targeting armhf
+# Build zlib 1.2.11 and libpng 1.6.37 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -138,8 +125,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Build dynamic libpng
     && git clone git://git.code.sf.net/p/libpng/code libpng \
     && cd libpng \
-    && git checkout b78804f9a2568b270ebd30eca954ef7447ba92f7 \
-    && ./autogen.sh \
+    && git checkout a40189cf881e9f0db80511c382292a5604c3c3d1 \
     && ./configure --prefix=/usr --host="$CHOST" \
     && make \
     && DESTDIR="$SYSROOT" make install \
@@ -155,14 +141,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Build libevdev 1.5.8 targeting armhf
+# Build libevdev 1.9.1 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Build libevdev
     && cd /root \
     && mkdir libevdev \
     && cd libevdev \
-    && curl https://www.freedesktop.org/software/libevdev/libevdev-1.5.8.tar.xz -o libevdev.tar.xz \
-    && echo "6083d81e46609da8ba80cb826c02d9080764a6dec33c8267ccb7e158833d4c6d  libevdev.tar.xz" > sha256sums \
+    && curl https://www.freedesktop.org/software/libevdev/libevdev-1.9.1.tar.xz -o libevdev.tar.xz \
+    && echo "f5603c48c5afd76b14df7a5124e0a94a102f8da0d45826192325069d1bbc7acb  libevdev.tar.xz" > sha256sums \
     && sha256sum -c sha256sums \
     && tar --strip-components=1 -xf libevdev.tar.xz \
     && rm libevdev.tar.xz sha256sums \
