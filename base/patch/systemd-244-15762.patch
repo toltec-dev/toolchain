@@ -1,0 +1,69 @@
+diff --git a/meson.build b/meson.build
+index 4c997ab6f7e..580d5126fae 100644
+--- a/meson.build
++++ b/meson.build
+@@ -411,6 +411,9 @@ add_project_arguments(cc.get_supported_arguments(basic_disabled_warnings), langu
+ add_project_arguments(cc.get_supported_arguments(possible_cc_flags), language : 'c')
+ add_project_link_arguments(cc.get_supported_link_arguments(possible_link_flags), language : 'c')
+ 
++have = cc.has_argument('-Wzero-length-bounds')
++conf.set10('HAVE_ZERO_LENGTH_BOUNDS', have)
++
+ if cc.compiles('''
+    #include <time.h>
+    #include <inttypes.h>
+diff --git a/src/core/path.c b/src/core/path.c
+index c7907ce4bf6..1bbf27c5c57 100644
+--- a/src/core/path.c
++++ b/src/core/path.c
+@@ -223,11 +223,10 @@ static void path_spec_mkdir(PathSpec *s, mode_t mode) {
+ }
+ 
+ static void path_spec_dump(PathSpec *s, FILE *f, const char *prefix) {
+-        fprintf(f,
+-                "%s%s: %s\n",
+-                prefix,
+-                path_type_to_string(s->type),
+-                s->path);
++        const char *type;
++
++        assert_se(type = path_type_to_string(s->type));
++        fprintf(f, "%s%s: %s\n", prefix, type, s->path);
+ }
+ 
+ void path_spec_done(PathSpec *s) {
+@@ -607,14 +606,16 @@ static int path_serialize(Unit *u, FILE *f, FDSet *fds) {
+         (void) serialize_item(f, "result", path_result_to_string(p->result));
+ 
+         LIST_FOREACH(spec, s, p->specs) {
++                const char *type;
+                 _cleanup_free_ char *escaped = NULL;
+ 
+                 escaped = cescape(s->path);
+                 if (!escaped)
+                         return log_oom();
+ 
++                assert_se(type = path_type_to_string(s->type));
+                 (void) serialize_item_format(f, "path-spec", "%s %i %s",
+-                                             path_type_to_string(s->type),
++                                             type,
+                                              s->previous_exists,
+                                              s->path);
+         }
+diff --git a/src/shared/ethtool-util.c b/src/shared/ethtool-util.c
+index 0cde87f5ac3..25bc79eeea1 100644
+--- a/src/shared/ethtool-util.c
++++ b/src/shared/ethtool-util.c
+@@ -434,7 +434,12 @@ static int get_stringset(int fd, struct ifreq *ifr, int stringset_id, struct eth
+         if (!buffer.info.sset_mask)
+                 return -EINVAL;
+
++#pragma GCC diagnostic push
++#if HAVE_ZERO_LENGTH_BOUNDS
++#  pragma GCC diagnostic ignored "-Wzero-length-bounds"
++#endif
+         len = buffer.info.data[0];
++#pragma GCC diagnostic pop
+
+         strings = malloc0(sizeof(struct ethtool_gstrings) + len * ETH_GSTRING_LEN);
+         if (!strings)

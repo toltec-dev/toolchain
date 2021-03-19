@@ -68,6 +68,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 # Build systemd 244 targeting armhf
+COPY patch/*.patch /
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -81,6 +82,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && git clone https://github.com/systemd/systemd.git \
     && cd systemd \
     && git checkout db9c5ae73e23d816e2df2a3e10a9a2a60b5b3ed7 \
+    # Fix build errors with GCC 10 and -O3
+    # (see <https://github.com/systemd/systemd/pull/15762>)
+    && git apply /systemd-244-15762.patch \
+    && rm /systemd-244-15762.patch \
     && ./configure \
         --buildtype=release \
         --cross-file="$CHOST" \
