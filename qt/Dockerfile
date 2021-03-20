@@ -50,7 +50,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Add the closed-source libqsgepaper library
 RUN curl --proto '=https' --tlsv1.2 -sSf \
-        https://toltec-dev.org/thirdparty/lib/libqsgepaper.a \
+        https://toltec-dev.org/thirdparty/lib/libqsgepaper-5.15.a \
         -o "$SYSROOT/usr/lib/libqsgepaper.a" \
     && curl --proto '=https' --tlsv1.2 -sSf \
         https://toltec-dev.org/thirdparty/include/epframebuffer.h \
