@@ -2,7 +2,7 @@
 
 ### v2.x
 
-#### v2.0 — 2021-03-19
+#### v2.0 — 2021-03-20
 
 * Update libraries for reMarkable 2.6.1.71
 
