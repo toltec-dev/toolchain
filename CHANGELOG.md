@@ -2,6 +2,10 @@
 
 ### v2.x
 
+#### v2.0.1 — 2021-04-02
+
+* Fix crashes for some apps due to libqsgepaper
+
 #### v2.0 — 2021-03-20
 
 * Update libraries for reMarkable 2.6.1.71
