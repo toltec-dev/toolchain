@@ -1,0 +1,17 @@
+name: build
+on:
+    push:
+        branches:
+            - v1.x
+            - v2.x
+jobs:
+    build:
+        name: Publish latest
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the Git repository
+              uses: actions/checkout@v2
+            - name: Build and publish images
+              run: |
+                echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u matteodelabre --password-stdin
+                ./scripts/build -p .
