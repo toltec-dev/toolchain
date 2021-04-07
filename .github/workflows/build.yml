@@ -2,7 +2,8 @@ name: build
 on:
     push:
         branches:
-            - master
+            - v1.x
+            - v2.x
 jobs:
     build:
         name: Publish latest
