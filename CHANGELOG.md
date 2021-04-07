@@ -2,6 +2,10 @@
 
 ### v2.x
 
+#### v2.1 — 2021-04-07
+
+* Update all images to be based on Debian unstable (2021-03-29 snapshot)
+
 #### v2.0.1 — 2021-04-02
 
 * Fix crashes for some apps due to libqsgepaper
@@ -13,6 +17,10 @@
 ***
 
 ### v1.x
+
+#### v1.6 — 2021-04-07
+
+* Update all images to be based on Debian unstable (2021-03-29 snapshot)
 
 #### v1.5 — 2021-03-18
 
