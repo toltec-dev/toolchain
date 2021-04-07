@@ -36,8 +36,8 @@ The table below lists the version number of each library for each major toolchai
 <table>
     <tr>
         <th align="left">↓ Library \ Toolchain →</th>
-        <th align="left">1.x</td>
-        <th align="left">2.x</td>
+        <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v1.x">1.x</a></td>
+        <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v2.x">2.x</a></td>
     </tr>
     <tr>
         <th>Compatible reMarkable updates</td>
