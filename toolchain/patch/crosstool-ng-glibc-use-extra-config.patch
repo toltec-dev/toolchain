@@ -1,0 +1,14 @@
+diff --git a/scripts/build/libc/glibc.sh b/scripts/build/libc/glibc.sh
+index ba6e5482..18b57e20 100644
+--- a/scripts/build/libc/glibc.sh
++++ b/scripts/build/libc/glibc.sh
+@@ -548,7 +548,8 @@ glibc_locales()
+         --without-gd                       \
+         --disable-debug                    \
+         --disable-sanity-checks            \
+-        "${extra_config[@]}"
++        "${extra_config[@]}"               \
++        "${CT_GLIBC_EXTRA_CONFIG_ARRAY[@]}"
+ 
+     CT_DoLog EXTRA "Building C library localedef"
+     CT_DoExecLog ALL make ${CT_JOBSFLAGS}

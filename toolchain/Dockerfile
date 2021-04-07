@@ -1,5 +1,5 @@
 # Essential cross-compiling build tools for the reMarkable
-FROM debian:buster
+FROM debian:unstable-20210329-slim
 ARG NGCONFIG="arm-remarkable-linux-gnueabihf"
 ARG CHOST="arm-linux-gnueabihf"
 
@@ -16,8 +16,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Build crosstool-ng 1.24.0 and use it to build the toolchain
+# Build latest crosstool-ng and use it to build the toolchain
 COPY crosstool-ng "/$NGCONFIG"
+COPY patch/*.patch /
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -37,7 +38,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://github.com/crosstool-ng/crosstool-ng \
     && cd crosstool-ng \
-    && git checkout b2151f1dba2b20c310adfe7198e461ec4469172b \
+    # Copy and apply our patches
+    && git checkout 6729a76d0c8ecd5d3f347ec31cc1c093b8e20b8e \
+    && git apply /crosstool-ng-glibc-use-extra-config.patch \
+    && rm /crosstool-ng-glibc-use-extra-config.patch \
+    && mv /crosstool-ng-glibc-fix-multiple-nss-defs.patch \
+        packages/glibc/2.27/0005-fix-multiple-nss-defs.patch \
     && mv "/$NGCONFIG" samples \
     && ./bootstrap \
     && ./configure --enable-local \
