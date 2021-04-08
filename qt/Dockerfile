@@ -4,6 +4,7 @@ FROM $FROM
 
 # Build Qt 5.11.3 targeting armhf
 COPY linux-arm-remarkable-g++ /linux-arm-remarkable-g++
+COPY patch/*.patch /
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -21,6 +22,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Fix compiling error of old Qt with recent GCC
     # (see <https://bugreports.qt.io/browse/QTBUG-74196>)
     && find . -type f \( -name "*.cpp" -o -name "*.h" \) -print0 | xargs -0 sed -ri 's/asm volatile ?\(/asm (/g' \
+    # Fix compiling error with GCC 9
+    # (see <https://codereview.qt-project.org/c/qt/qtbase/+/245425>)
+    && cd qtbase \
+    && git apply /fix-mersenne-twister-construction.patch \
+    && rm /fix-mersenne-twister-construction.patch \
+    && cd .. \
     && cd .. \
     && mkdir qt5-build \
     && cd qt5-build \
