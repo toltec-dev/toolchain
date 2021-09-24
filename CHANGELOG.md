@@ -2,6 +2,12 @@
 
 ### v2.x
 
+#### v2.2 — 2021-09-25
+
+* Update base image to use Debian unstable 2021-09-02
+* Update Go to 1.17.1
+* Update Rust to latest nightly
+
 #### v2.1 — 2021-04-07
 
 * Update all images to be based on Debian unstable (2021-03-29 snapshot)
