@@ -77,6 +77,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         gperf \
         m4 \
+        rsync \
     # Build systemd
     && cd /root \
     && git clone https://github.com/systemd/systemd.git \
@@ -104,6 +105,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         gperf \
         m4 \
+        rsync \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

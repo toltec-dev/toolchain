@@ -1,5 +1,5 @@
 # Essential cross-compiling build tools for the reMarkable
-FROM debian:unstable-20210329-slim
+FROM debian:unstable-20210902-slim
 ARG NGCONFIG="arm-remarkable-linux-gnueabihf"
 ARG CHOST="arm-linux-gnueabihf"
 
