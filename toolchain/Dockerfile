@@ -37,7 +37,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://github.com/crosstool-ng/crosstool-ng \
     && cd crosstool-ng \
-    && git checkout 6729a76d0c8ecd5d3f347ec31cc1c093b8e20b8e \
+    && git checkout 584e57e888fd652ff6228c1dbdff18556149c7cb \
     && mv "/$NGCONFIG" samples \
     && ./bootstrap \
     && ./configure --enable-local \
