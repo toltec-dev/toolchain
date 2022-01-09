@@ -9,7 +9,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         git \
-        python \
     # Build Qt
     && cd /root \
     && git clone https://code.qt.io/qt/qt5.git \
@@ -44,7 +43,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm \
     && apt-get autoremove -y \
         git \
-        python \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

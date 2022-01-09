@@ -86,7 +86,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Fix build errors with GCC 10 and -O3
     # (see <https://github.com/systemd/systemd/pull/15762>)
     && git apply /systemd-244-15762.patch \
-    && rm /systemd-244-15762.patch \
+    # Fix Meson syntax and semantic changes in recent versions
+    # (see <https://github.com/systemd/systemd/pull/20633>)
+    && git apply /systemd-244-20633.patch \
+    && rm /systemd-244-*.patch \
     && ./configure \
         --buildtype=release \
         --cross-file="$CHOST" \
@@ -117,7 +120,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         automake \
         git \
         libtool \
-        python \
     # Build static zlib
     && cd /root \
     && git clone https://github.com/madler/zlib \
@@ -144,7 +146,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         automake \
         git \
         libtool \
-        python \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

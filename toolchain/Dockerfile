@@ -1,5 +1,5 @@
 # Essential cross-compiling build tools for the reMarkable
-FROM debian:unstable-20211220-slim
+FROM debian:unstable-20220125-slim
 ARG NGCONFIG="arm-remarkable-linux-gnueabihf"
 ARG CHOST="arm-linux-gnueabihf"
 
@@ -11,18 +11,27 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         ca-certificates \
         cmake \
         curl \
+        gcc-10 \
+        g++-10 \
         meson \
         pkg-config \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    # Force use of gcc and g++ 10
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 \
+        --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-10  \
+        --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-10  \
+        --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-10  \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-10
 
 # Build latest crosstool-ng and use it to build the toolchain
 COPY crosstool-ng "/$NGCONFIG"
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
         autoconf \
+        automake \
         bison \
         file \
         flex \
@@ -37,7 +46,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://github.com/crosstool-ng/crosstool-ng \
     && cd crosstool-ng \
-    && git checkout 584e57e888fd652ff6228c1dbdff18556149c7cb \
+    && git checkout a21748bd5342b72ddf5bfef782e058c3245161f7 \
     && mv "/$NGCONFIG" samples \
     && ./bootstrap \
     && ./configure --enable-local \
@@ -54,6 +63,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm "/opt/x-tools/$NGCONFIG/build.log.bz2" \
     && apt-get autoremove -y \
         autoconf \
+        automake \
         bison \
         file \
         flex \
