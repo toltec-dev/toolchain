@@ -167,3 +167,40 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Clean up
     && rm -rf libevdev \
     && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm
+
+# Build OpenSSL 1.1.0l targeting armhf
+RUN export DEBIAN_FRONTEND=noninteractive \
+    # Build OpenSSL
+    && cd /root \
+    && mkdir openssl \
+    && cd openssl \
+    && curl https://www.openssl.org/source/old/1.1.0/openssl-1.1.0l.tar.gz -o openssl.tar.gz \
+    && echo "74a2f756c64fd7386a29184dc0344f4831192d61dc2481a93a4c5dd727f41148  openssl.tar.gz" > sha256sums \
+    && sha256sum -c sha256sums \
+    && tar --strip-components=1 -xf openssl.tar.gz \
+    && rm openssl.tar.gz sha256sums \
+    && ./Configure --prefix=/usr --cross-compile-prefix="$CROSS_COMPILE" linux-armv4 \
+    && make \
+    && make DESTDIR="$SYSROOT" install_sw \
+    && cd .. \
+    # Clean up
+    && rm -rf openssl
+
+# Build libcurl 7.72.0 targeting armhf
+RUN export DEBIAN_FRONTEND=noninteractive \
+    # Build libcurl
+    && cd /root \
+    && mkdir libcurl \
+    && cd libcurl \
+    && curl https://curl.se/download/curl-7.72.0.tar.xz -o curl.tar.xz \
+    && echo "0ded0808c4d85f2ee0db86980ae610cc9d165e9ca9da466196cc73c346513713  curl.tar.xz" > sha256sums \
+    && sha256sum -c sha256sums \
+    && tar --strip-components=1 -xf curl.tar.xz \
+    && rm curl.tar.xz sha256sums \
+    && ./configure --prefix=/usr --host="$CHOST" --with-openssl \
+    && make \
+    && DESTDIR="$SYSROOT" make install \
+    && cd .. \
+    # Clean up
+    && rm -rf libcurl \
+    && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm
