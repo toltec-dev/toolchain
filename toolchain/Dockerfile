@@ -16,7 +16,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         meson \
         pkg-config \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt \
     # Force use of gcc and g++ 10
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 \
         --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-10  \
@@ -75,7 +75,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         texinfo \
         unzip \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Build Opkg for installing and removing ipk packages in the sysroot
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -111,7 +111,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         libssl-dev \
         libtool-bin \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Configure the environment for cross-compiling
 ENV ARCH=arm \

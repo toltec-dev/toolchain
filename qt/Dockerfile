@@ -44,7 +44,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get autoremove -y \
         git \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Add the closed-source libqsgepaper library
 RUN curl --proto '=https' --tlsv1.2 -sSf \

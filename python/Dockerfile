@@ -8,4 +8,4 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y \
         python3-pip \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt

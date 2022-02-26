@@ -31,7 +31,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get autoremove -y \
         git \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Build util-linux 2.36.1 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -65,7 +65,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         libtool \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Build systemd 244 targeting armhf
 COPY patch/*.patch /
@@ -110,7 +110,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         m4 \
         rsync \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Build zlib 1.2.11 and libpng 1.6.37 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -147,7 +147,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         libtool \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Build libevdev 1.9.1 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
