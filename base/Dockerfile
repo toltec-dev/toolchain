@@ -204,3 +204,36 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Clean up
     && rm -rf libcurl \
     && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm
+
+# Build breakpad 0.1 (db1cda2653) targeting armhf
+RUN export DEBIAN_FRONTEND=noninteractive \
+    # Install build dependencies
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        git \
+    # Fetch and activate depot_tools
+    && cd /root \
+    && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
+    && export PATH=$PATH:/root/depot_tools \
+    # Build static breakpad
+    && cd /root \
+    && mkdir breakpad \
+    && cd breakpad \
+    && fetch breakpad \
+    && cd src \
+    && git checkout db1cda26539c711c3da7ed4d410dfe8190e89b8f \
+    && ./configure --prefix=/usr --host="$CHOST" \
+    && make \
+    && DESTDIR="$SYSROOT" make install \
+    && cd ../.. \
+    # Clean up
+    && rm -rf \
+        .vpython-root \
+        .vpython_cipd_cache \
+        /tmp/* \
+        breakpad \
+        depot_tools \
+    && apt-get autoremove -y \
+        git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
