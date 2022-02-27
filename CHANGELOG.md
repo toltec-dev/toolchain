@@ -2,6 +2,16 @@
 
 ### v2.x
 
+#### v2.3 — 2022-02-27
+
+* Update base image to use Debian unstable 2022-01-25
+* Pin gcc/g++ major version to v10
+* Update crosstool-ng to a21748bd
+* Add NGCONFIG environment variable
+* Add OpenSSL to the `base` image
+* Add libcurl to the `base` image
+* Add libbreakpad to the `base` image
+
 #### v2.2 — 2021-09-25
 
 * Update base image to use Debian unstable 2021-09-02

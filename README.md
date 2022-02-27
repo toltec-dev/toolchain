@@ -21,7 +21,7 @@ Local Opkg repository | `/repo`    | Packages stored in this directory can be in
 Name | Contents
 ---- | -------
 [toolchain](https://github.com/orgs/toltec-dev/packages/container/package/toolchain) | Only the tools mentioned above.
-[base](https://github.com/orgs/toltec-dev/packages/container/package/base) | Adds to the host system root a set of libraries similar to those that come pre-installed on the reMarkable: libcap, util-linux, libsystemd, zlib, libpng, and libevdev.
+[base](https://github.com/orgs/toltec-dev/packages/container/package/base) | Adds to the host system root a set of libraries similar to those that come pre-installed on the reMarkable: libcap, util-linux, libsystemd, zlib, libpng, libevdev, OpenSSL, libcurl, and libbreakpad.
 [qt](https://github.com/orgs/toltec-dev/packages/container/package/qt) | Adds Qt to the host system root, including the closed-source libqsgepaper plugin. Includes the `qmake` build tool in the build system root.
 [rust](https://github.com/orgs/toltec-dev/packages/container/package/rust) | Adds Nightly Rust configured to use the ARMv7 cross-compiler to the build system root.
 [python](https://github.com/orgs/toltec-dev/packages/container/package/python) | Adds a Python 3.7.3 distribution to the build system root.
@@ -92,6 +92,21 @@ The table below lists the version number of each library for each major toolchai
         <td>libevdev</td>
         <td>1.5.8</td>
         <td>1.9.1</td>
+    </tr>
+    <tr>
+        <td>OpenSSL</td>
+        <td>—</td>
+        <td>1.1.1g</td>
+    </tr>
+    <tr>
+        <td>libcurl</td>
+        <td>—</td>
+        <td>7.69.1</td>
+    </tr>
+    <tr>
+        <td>libbreakpad</td>
+        <td>—</td>
+        <td>0.1 (db1cda2653)</td>
     </tr>
     <tr>
         <th colspan="3" align="left">
