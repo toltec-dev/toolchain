@@ -1,6 +1,6 @@
 name: pr
 on:
-    pr:
+    pull_request:
         branches:
             - v1.x
             - v2.x
