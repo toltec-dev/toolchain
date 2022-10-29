@@ -2,7 +2,7 @@
 ARG FROM
 FROM $FROM
 
-RUN echo "bumping on 2022/01/22"
+RUN echo "bumping on 2022/10/29"
 # Install rustup
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -q \
     --default-toolchain nightly \
