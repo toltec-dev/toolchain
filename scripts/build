@@ -88,4 +88,8 @@ pushd "$imagesdir"/rust
 docker-build base rust
 popd
 
+pushd "$imagesdir"/dotnet6
+docker-build toolchain dotnet6
+popd
+
 status "Done"
