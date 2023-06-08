@@ -26,6 +26,7 @@ Name | Contents
 [rust](https://github.com/orgs/toltec-dev/packages/container/package/rust) | Adds Nightly Rust configured to use the ARMv7 cross-compiler to the build system root.
 [python](https://github.com/orgs/toltec-dev/packages/container/package/python) | Adds a Python 3.7.3 distribution to the build system root.
 [golang](https://github.com/orgs/toltec-dev/packages/container/package/golang) | Adds a Go 1.16.2 distribution to the build system root.
+[dotnet6](https://github.com/orgs/toltec-dev/packages/container/package/dotnet6) | Adds dotnet6 to the build system root.
 
 ### Version Matrix
 
