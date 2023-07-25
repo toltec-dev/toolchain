@@ -132,7 +132,7 @@ _Deprecation notice: Images of the v1.x and v2.x series are kept for compatibili
         <td>Qt</td>
         <td>5.11.3</td>
         <td>5.15.1</td>
-        <td>5.15.1 ([reMarkable qtbase](https://github.com/reMarkable/qtbase))</td>
+        <td>5.15.1 (<a href="https://github.com/reMarkable/qtbase">reMarkable qtbase</a>)</td>
     </tr>
 </table>
 
