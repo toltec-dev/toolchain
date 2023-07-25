@@ -211,6 +211,15 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         git \
+        zlib1g-dev \
+        libssl-dev \
+    # breakpad's build tools require python2 to be available as python on the path
+    && git clone https://github.com/pyenv/pyenv.git .pyenv \
+    && export PYENV_ROOT="$(pwd)/.pyenv" \
+    && export PATH="$PYENV_ROOT/bin:$PATH" \
+    && eval "$(pyenv init --path)" \
+    && pyenv install 2.7 \
+    && pyenv global 2.7 \
     # Fetch and activate depot_tools
     && cd /root \
     && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
@@ -233,7 +242,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         /tmp/* \
         breakpad \
         depot_tools \
+        .pyenv \
     && apt-get autoremove -y \
         git \
+        zlib1g-dev \
+        libssl-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
