@@ -41,11 +41,13 @@ _Deprecation notice: Images of the v1.x series are kept for compatibility but wi
         <th align="left">↓ Library \ Toolchain →</th>
         <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v1.x">1.x</a></td>
         <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v2.x">2.x</a></td>
+        <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v3.x">3.x</a></td>
     </tr>
     <tr>
         <th>Compatible reMarkable updates</td>
         <td>⩽ 2.5.0.26</td>
         <td>⩾ 2.6.1.71</td>
+        <td>⩾ 2.9.0.153</td>
     </tr>
     <tr>
         <th colspan="3" align="left">
@@ -56,10 +58,12 @@ _Deprecation notice: Images of the v1.x series are kept for compatibility but wi
         <td>Linux headers</td>
         <td>4.9</td>
         <td>4.14</td>
+        <td>5.4.70</td>
     </tr>
     <tr>
         <td>glibc</td>
         <td>2.27</td>
+        <td>2.31</td>
         <td>2.31</td>
     </tr>
     <tr>
@@ -71,15 +75,18 @@ _Deprecation notice: Images of the v1.x series are kept for compatibility but wi
         <td>libcap</td>
         <td>2.25</td>
         <td>2.32</td>
+        <td>2.32</td>
     </tr>
     <tr>
         <td>util-linux</td>
         <td>2.32</td>
         <td>2.36.1</td>
+        <td>2.36.1</td>
     </tr>
     <tr>
         <td>libsystemd</td>
         <td>237</td>
+        <td>244</td>
         <td>244</td>
     </tr>
     <tr>
@@ -90,25 +97,30 @@ _Deprecation notice: Images of the v1.x series are kept for compatibility but wi
         <td>libpng</td>
         <td>1.6.34</td>
         <td>1.6.37</td>
+        <td>1.6.37</td>
     </tr>
     <tr>
         <td>libevdev</td>
         <td>1.5.8</td>
+        <td>1.9.1</td>
         <td>1.9.1</td>
     </tr>
     <tr>
         <td>OpenSSL</td>
         <td>—</td>
         <td>1.1.1g</td>
+        <td>1.1.1g</td>
     </tr>
     <tr>
         <td>libcurl</td>
         <td>—</td>
         <td>7.69.1</td>
+        <td>7.69.1</td>
     </tr>
     <tr>
         <td>libbreakpad</td>
         <td>—</td>
+        <td>0.1 (db1cda2653)</td>
         <td>0.1 (db1cda2653)</td>
     </tr>
     <tr>
@@ -120,6 +132,7 @@ _Deprecation notice: Images of the v1.x series are kept for compatibility but wi
         <td>Qt</td>
         <td>5.11.3</td>
         <td>5.15.1</td>
+        <td>5.15.1 ([reMarkable qtbase](https://github.com/reMarkable/qtbase))</td>
     </tr>
 </table>
 

@@ -1,6 +1,21 @@
 ## Changelog
 
+### v3.x
+
+#### v3.0 — 2023-07-25
+
+* Update crosstool-ng to assume linux kernel 5.4.70
+* Update Qt to use reMarkable's qtbase
+
 ### v2.x
+
+#### v2.3.2
+
+* Add dotnet6 image
+
+#### v2.3.1
+
+* Bump rust to latest nightly
 
 #### v2.3 — 2022-02-27
 
