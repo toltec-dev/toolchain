@@ -34,7 +34,7 @@ The toolchain images aim to follow the library versions available on the stock r
 The major version number of the toolchain is increased each time an official reMarkable update changes the available libraries.
 The table below lists the version number of each library for each major toolchain release.
 
-_Deprecation notice: Images of the v1.x series are kept for compatibility but will not be maintained further._
+_Deprecation notice: Images of the v1.x and v2.x series are kept for compatibility but will not be maintained further._
 
 <table>
     <tr>
