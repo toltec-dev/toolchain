@@ -7,6 +7,8 @@
 * Update crosstool-ng to assume linux kernel 5.4.70
 * Update Qt to use reMarkable's qtbase
 
+***
+
 ### v2.x
 
 #### v2.3.2
