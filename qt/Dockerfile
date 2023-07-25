@@ -13,8 +13,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && git clone https://code.qt.io/qt/qt5.git \
     && cd qt5 \
-    && git checkout dd11f01de7416b650b58c13e18146533d764477c \
-    && perl init-repository --module-subset=essential,-qtmultimedia,-qttools,qtgraphicaleffects,qtquickcontrols2,qtsvg,qtwebsockets \
+    && git checkout 0f7f776d3915ef16a9c737141994284f035aa3b1 \
+    && GIT_ASKPASS="/bin/echo" perl init-repository --module-subset=essential,-qtmultimedia,-qttools,qtgraphicaleffects,qtquickcontrols2,qtsvg,qtwebsockets --mirror=https://github.com/reMarkable/ \
     # Setup reMarkable mkspec
     && mv /linux-arm-remarkable-g++ qtbase/mkspecs/devices \
     && cd .. \
