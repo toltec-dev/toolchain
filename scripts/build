@@ -45,18 +45,17 @@ fi
 imagesdir="$1"
 version="$2"
 
-# Enable BuildKit for better cache behavior
-# See <https://docs.docker.com/engine/reference/builder/#buildkit>
-export DOCKER_BUILDKIT=1
+docker buildx create --use
 
 docker-build() {
     from="$(image-name "$1" "$version")"
     target="$(image-name "$2" "$version")"
     status "Building image '$target'"
-    docker image build \
+    docker buildx build \
         --build-arg BUILDKIT_INLINE_CACHE=1 \
         --build-arg FROM="$from" \
         --cache-from "$(image-name "$2")" \
+        --platform linux/amd64,linux/arm64 \
         --tag "$target" .
 
     if [[ -n $publishflag ]]; then
