@@ -16,6 +16,8 @@ jobs:
           registry: ghcr.io
           username: matteodelabre
           password: ${{ secrets.CR_PAT }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
       - name: Build and publish images
         run: |
           version="$(echo "${{ github.ref }}" | cut -d / -f 3)"
