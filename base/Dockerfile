@@ -249,3 +249,20 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         libssl-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+
+# Build libffi 3.3 targeting armhf
+RUN export DEBIAN_FRONTEND=noninteractive \
+    # Build libffi
+    && cd /root
+    && mkdir libffi
+    curl https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz -o libffi.tar.gz \
+    echo "72fba7922703ddfa7a028d513ac15a85c8d54c8d67f55fa5a4802885dc652056  libffi.tar.gz" > sha256sums \
+    && sha256sum -c sha256sums \
+    && tar --strip-components=1 -xf libffi.tar.xz \
+    && rm libffi.tar.xz sha256sums \
+    && ./configure --prefix=/usr --host="$CHOST" \
+    && make \
+    && DESTDIR="$SYSROOT" make install \
+    && cd .. \
+    # Clean up
+    && rm -rf libffi
