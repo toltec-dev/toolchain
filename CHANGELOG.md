@@ -2,6 +2,10 @@
 
 ### v3.x
 
+### v3.1 - 2023-08-17
+
+* Update golang to v1.20.7
+
 #### v3.0 — 2023-07-25
 
 * Update crosstool-ng to assume linux kernel 5.4.70
