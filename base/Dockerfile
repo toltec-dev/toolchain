@@ -230,7 +230,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd breakpad \
     && fetch breakpad \
     && cd src \
-    && git checkout db1cda26539c711c3da7ed4d410dfe8190e89b8f \
+    && git checkout -f db1cda26539c711c3da7ed4d410dfe8190e89b8f \
     && ./configure --prefix=/usr --host="$CHOST" \
     && make \
     && DESTDIR="$SYSROOT" make install \
