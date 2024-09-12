@@ -2,6 +2,11 @@
 
 ### v3.x
 
+### v3.2 - 2024-09-11
+
+* Use latest rust nightly
+* Switch from debian unstable to debian bullseye
+
 ### v3.1 - 2023-08-17
 
 * Update golang to v1.20.7
