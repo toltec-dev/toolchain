@@ -28,7 +28,7 @@ jobs:
           context: toolchain/
           push: true
           tags: ${{ env.tag }}
-          cache_from: type=gha
+          cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             BUILDKIT_INLINE_CACHE=1
@@ -57,7 +57,7 @@ jobs:
           context: toolchain/
           push: true
           tags: ${{ env.tag }}
-          cache_from: type=gha
+          cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             BUILDKIT_INLINE_CACHE=1
@@ -94,7 +94,7 @@ jobs:
           context: ${{ matrix.target }}/
           push: true
           tags: ${{ env.tag }}
-          cache_from: type=gha
+          cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             BUILDKIT_INLINE_CACHE=1
