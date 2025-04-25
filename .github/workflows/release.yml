@@ -37,7 +37,7 @@ jobs:
           push: true
           platforms: ${{ matrix.platform }}
           cache-from: type=gha,scope=toolchain${{ env.PLATFORM_PAIR }}
-          cache-to: type=gha,mode=max,scope=toolchain
+          cache-to: type=gha,mode=max,scope=toolchain${{ env.PLATFORM_PAIR }}
           outputs: type=image,"name=ghcr.io/noahimesaka1873/toolchain",push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILDKIT_INLINE_CACHE=1
