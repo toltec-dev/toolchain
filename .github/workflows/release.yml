@@ -36,8 +36,8 @@ jobs:
           context: toolchain/
           push: true
           platforms: ${{ matrix.platform }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=toolchain${{ env.PLATFORM_PAIR }}
+          cache-to: type=gha,mode=max,scope=toolchain
           outputs: type=image,"name=ghcr.io/noahimesaka1873/toolchain",push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILDKIT_INLINE_CACHE=1
@@ -126,8 +126,8 @@ jobs:
           context: toolchain/
           push: true
           platforms: ${{ matrix.platform }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=base${{ env.PLATFORM_PAIR }}
+          cache-to: type=gha,mode=max,scope=base${{ env.PLATFORM_PAIR }}
           outputs: type=image,"name=ghcr.io/noahimesaka1873/base",push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILDKIT_INLINE_CACHE=1
@@ -224,8 +224,8 @@ jobs:
           context: ${{ matrix.target }}/
           push: true
           platforms: ${{ matrix.platform }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.target }}${{ env.PLATFORM_PAIR }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.target }}${{ env.PLATFORM_PAIR }}
           outputs: type=image,"name=ghcr.io/noahimesaka1873/${{ matrix.target }}",push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILDKIT_INLINE_CACHE=1
