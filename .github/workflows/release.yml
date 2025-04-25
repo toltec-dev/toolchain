@@ -55,7 +55,7 @@ jobs:
       - name: Build and push toolchain
         uses: docker/build-push-action@v5
         with:
-          context: toolchain/
+          context: base/
           push: true
           tags: ${{ env.tag }}
           cache-from: type=gha,scope=base
