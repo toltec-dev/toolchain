@@ -6,7 +6,12 @@ on:
 jobs:
   stage1:
     name: Stage 1
-    runs-on: ubuntu-latest
+    runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
+    strategy:
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
     steps:
       - name: Checkout the Git repository
         uses: actions/checkout@v3
@@ -19,23 +24,84 @@ jobs:
       - name: Set up version
         run: |
           VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
-          echo "tag=ghcr.io/noahimesaka1873/toolchain:$VERSION" >> "$GITHUB_ENV"
+          platform=${{ matrix.platform }}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          echo "tag=ghcr.io/noahimesaka1873/toolchain:$VERSION" >> $GITHUB_ENV
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: toolchain/
           push: true
           tags: ${{ env.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          outputs: type=image,"name=ghcr.io/noahimesaka1873/toolchain",push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILDKIT_INLINE_CACHE=1
+      - name: Export digest
+        if: ${{ inputs.push_to_images != '' }}
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+      - name: Upload digest
+        if: ${{ inputs.push_to_images != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-toolchain-${{ env.PLATFORM_PAIR }}-${{ env.VERSION }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+  stage1-upload:
+    name: Stage 1 merge and push image
+    needs: stage1
+    runs-on: ubuntu-24.04
+    env:
+      PUSH_TO_IMAGES: ghcr.io/noahimesaka1873/toolchain
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up version
+        run: |
+          VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-toolchain-*-${{ env.VERSION }}
+          merge-multiple: true
+      - name: Log in to the GitHub Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.PUSH_TO_IMAGES }}
+          tags: ${{ env.VERSION }}
+      - name: Create manifest list and push
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          echo "$PUSH_TO_IMAGES" | xargs -I{} \
+            docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+              $(printf '{}@sha256:%s ' *)
   stage2:
     name: Stage 2
-    runs-on: ubuntu-latest
-    needs: stage1
+    needs: stage1-upload
+    runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
+    strategy:
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
     steps:
       - name: Checkout the Git repository
         uses: actions/checkout@v3
@@ -48,24 +114,80 @@ jobs:
       - name: Set up version
         run: |
           VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
-          echo "tag=ghcr.io/noahimesaka1873/base:$VERSION" >> "$GITHUB_ENV"
+          platform=${{ matrix.platform }}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          echo "tag=ghcr.io/noahimesaka1873/base:$VERSION" >> $GITHUB_ENV
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: toolchain/
           push: true
           tags: ${{ env.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          outputs: type=image,"name=ghcr.io/noahimesaka1873/base",push-by-digest=true,name-canonical=true,push=true
           build-args: |
             BUILDKIT_INLINE_CACHE=1
             FROM=ghcr.io/noahimesaka1873/toolchain
+      - name: Export digest
+        if: ${{ inputs.push_to_images != '' }}
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+      - name: Upload digest
+        if: ${{ inputs.push_to_images != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-base-${{ env.PLATFORM_PAIR }}-${{ env.VERSION }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+  stage2-upload:
+    name: Stage 2 merge and push image
+    needs: stage2
+    runs-on: ubuntu-24.04
+    env:
+      PUSH_TO_IMAGES: ghcr.io/noahimesaka1873/base
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up version
+        run: |
+          VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-base-*-${{ env.VERSION }}
+          merge-multiple: true
+      - name: Log in to the GitHub Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.PUSH_TO_IMAGES }}
+          tags: ${{ env.VERSION }}
+      - name: Create manifest list and push
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          echo "$PUSH_TO_IMAGES" | xargs -I{} \
+            docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+              $(printf '{}@sha256:%s ' *)
   stage3:
     name: Stage 3
     runs-on: ubuntu-latest
-    needs: stage2
+    needs: stage2-upload
     strategy:
       matrix:
         from: [ghcr.io/noahimesaka1873/base]
@@ -85,7 +207,8 @@ jobs:
       - name: Set up version
         run: |
           VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
-          echo "tag=ghcr.io/noahimesaka1873/${{ matrix.target }}:$VERSION" >> "$GITHUB_ENV"
+          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "tag=ghcr.io/noahimesaka1873/${{ matrix.target }}:$VERSION" >> $GITHUB_ENV
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
@@ -98,4 +221,4 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             BUILDKIT_INLINE_CACHE=1
-            FROM=${{ matrix.from }}:${{ env.tag }}
+            FROM=${{ matrix.from }}:${{ env.version }}
