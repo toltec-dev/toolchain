@@ -42,13 +42,11 @@ jobs:
           build-args: |
             BUILDKIT_INLINE_CACHE=1
       - name: Export digest
-        if: ${{ inputs.push_to_images != '' }}
         run: |
           mkdir -p "${{ runner.temp }}/digests"
           digest="${{ steps.build.outputs.digest }}"
           touch "${{ runner.temp }}/digests/${digest#sha256:}"
       - name: Upload digest
-        if: ${{ inputs.push_to_images != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: digests-toolchain-${{ env.PLATFORM_PAIR }}-${{ env.VERSION }}
@@ -133,13 +131,11 @@ jobs:
             BUILDKIT_INLINE_CACHE=1
             FROM=ghcr.io/noahimesaka1873/toolchain:${{ env.VERSION }}
       - name: Export digest
-        if: ${{ inputs.push_to_images != '' }}
         run: |
           mkdir -p "${{ runner.temp }}/digests"
           digest="${{ steps.build.outputs.digest }}"
           touch "${{ runner.temp }}/digests/${digest#sha256:}"
       - name: Upload digest
-        if: ${{ inputs.push_to_images != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: digests-base-${{ env.PLATFORM_PAIR }}-${{ env.VERSION }}
