@@ -51,6 +51,8 @@ def run_cmd(line: list[str]) -> None:
             break
         if realtime_output:
             print(realtime_output.strip(), flush=True)
+    if p.returncode != 0:
+        exit(p.returncode)
 
 
 def build(
