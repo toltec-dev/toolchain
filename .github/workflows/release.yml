@@ -23,7 +23,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
-        run: ./scripts/build -p -g -s toolchain -v ${{ tag.version }}
+        run: ./scripts/build -p -g -s toolchain -v ${{ env.version }}
   stage2:
     name: Stage 2
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
-        run: ./scripts/build -p -g -s base -v ${{ tag.version }}
+        run: ./scripts/build -p -g -s base -v ${{ env.version }}
   stage3:
     name: Stage 3
     runs-on: ubuntu-latest
@@ -68,4 +68,4 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
-        run: ./scripts/build -p -g -s ${{ matrix.target }} -v ${{ tag.version }}
+        run: ./scripts/build -p -g -s ${{ matrix.target }} -v ${{ env.version }}
