@@ -42,7 +42,6 @@ def run_cmd(line: list[str]) -> None:
         line,
         stdout=sp.PIPE,
         stderr=sp.STDOUT,
-        shell=True,
         encoding="utf-8",
         errors="replace",
     )
@@ -86,6 +85,7 @@ if args.s:
     os.chdir(workdir)
 else:
     for i in builds:
+        print(f"Building {i}...")
         os.chdir(i)
         build(i, args.v, args.p, args.g, requires[i])
         os.chdir(workdir)
