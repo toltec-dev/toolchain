@@ -5,6 +5,7 @@ on:
       - v1.x
       - v2.x
       - v3.x
+      - v4.x
 jobs:
   stage1:
     name: Stage 1
