@@ -174,7 +174,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd /root \
     && mkdir openssl \
     && cd openssl \
-    && curl https://www.openssl.org/source/openssl-1.1.1g.tar.gz -o openssl.tar.gz \
+    && curl https://www.openssl.org/source/openssl-1.1.1g.tar.gz -Lo openssl.tar.gz \
     && echo "ddb04774f1e32f0c49751e21b67216ac87852ceb056b75209af2443400636d46  openssl.tar.gz" > sha256sums \
     && sha256sum -c sha256sums \
     && tar --strip-components=1 -xf openssl.tar.gz \
