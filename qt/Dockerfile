@@ -20,6 +20,19 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && mv /linux-arm-remarkable-g++ qtbase/mkspecs/devices \
 		&& mv /linux-aarch64-remarkable-g++ qtbase/mkspecs/devices \
     && cd .. \
+		# Build for host machine (required from Qt6+)
+		&& mkdir qt5-build \
+		&& cd qt5-build \
+		&& ../qt5/configure \
+		   -prefix /usr \
+			 -- -DQT_BUILD_EXAMPLES=OFF \
+			 -DQT_BUILD_TESTS=OFF \
+		&& cmake --build . --parallel $(nproc) \
+		&& cmake --install . \
+		&& cd .. \
+    # Clean up
+		&& rm -rf qt5-build \
+    # Build for armhf
     && mkdir qt5-build \
     && cd qt5-build \
     && ../qt5/configure \
@@ -27,7 +40,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         -opensource \
         -prefix /usr \
         -sysroot "$SYSROOT" \
-        -hostprefix /usr \
         -device linux-arm-remarkable-g++ \
         -device-option CROSS_COMPILE="$CROSS_COMPILE" \
         -nomake examples \
@@ -37,6 +49,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         -no-widgets \
         -no-feature-sql \
         -reduce-exports \
+				-- -DQT_HOST_PATH=/usr \
     && cmake --build . --parallel $(nproc) \
     && cmake --install . \
     && cd .. \
@@ -65,7 +78,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 		&& cmake --build . --parallel $(nproc) \
 		&& cmake --install . \
 		&& cd .. \
-    # Clean up
     && rm -rf qt5-build \
 		&& find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm' \
     && apt-get autoremove -y \
