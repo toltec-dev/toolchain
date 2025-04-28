@@ -240,8 +240,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Build libcap 2.66 targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
-    source /opt/x-tools/switch-aarch64.sh \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -268,11 +268,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get autoremove -y \
         git \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build util-linux 2.37.4 targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
-    source /opt/x-tools/switch-aarch64.sh \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -302,10 +302,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         libtool \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build systemd 250 targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
@@ -343,10 +343,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         rsync \
         python3-pip \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build zlib 1.2.11 and libpng 1.6.39 targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
@@ -379,10 +379,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         libtool \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build libevdev 1.12.1 targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
     # Build libevdev
     && cd /root \
@@ -398,10 +398,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf libevdev \
-    && find "$SYSROOT" -type l,f -name "*.la" -delete
+    && find "$SYSROOT" -type l,f -name "*.la" -delete'
 
 # Build OpenSSL 3.0.15 targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
     # Build OpenSSL
     && cd /root \
@@ -416,10 +416,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && make DESTDIR="$SYSROOT" install_sw \
     && cd .. \
     # Clean up
-    && rm -rf openssl
+    && rm -rf openssl'
 
 # Build libcurl 7.82.0 targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
     # Build libcurl
     && cd /root \
@@ -435,10 +435,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf libcurl \
-    && find "$SYSROOT" -type l,f -name "*.la" -delete
+    && find "$SYSROOT" -type l,f -name "*.la" -delete'
 
 # Build breakpad 0.1 (f88a1aa2af) targeting aarch64
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
@@ -482,5 +482,5 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         zlib1g-dev \
         libssl-dev \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
