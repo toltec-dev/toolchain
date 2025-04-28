@@ -66,13 +66,13 @@ def build(
         "BUILDKIT_INLINE_CACHE=1",
     ]
     if _from:
-        cmd.extend(["--build-arg", f"FROM=ghcr.io/noahimesaka1873/{_from}:{version}"])
+        cmd.extend(["--build-arg", f"FROM=ghcr.io/toltec-dev/{_from}:{version}"])
     if github:
         cmd.extend(["--cache-from", f"type=gha,scope={image}"])
         cmd.extend(["--cache-to", f"type=gha,mode=max,scope={image}"])
     if publish:
         cmd.extend(["--push"])
-    cmd.extend(["--tag", f"ghcr.io/noahimesaka1873/{image}:{version}", "."])
+    cmd.extend(["--tag", f"ghcr.io/toltec-dev/{image}:{version}", "."])
     run_cmd(cmd)
 
 
