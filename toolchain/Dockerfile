@@ -77,6 +77,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 		# Build the toolchain and install it in the following folder
 		&& export CT_PREFIX="/opt/x-tools" \
 		&& ./ct-ng "$NGCONFIG_AARCH64" \
+		&& ./ct-ng oldconfig \
+		&& ./ct-ng upgradeconfig \
+		&& ./ct-ng updatetools \
     && ./ct-ng build \
 		&& cd .. \
     # Clean up
