@@ -75,7 +75,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         m4 \
         rsync \
         python3-pip \
-    && pip3 install --no-cache-dir --break-system-packages jinja2 \
+    && pip3 install --no-cache-dir jinja2 \
     # Build systemd
     && cd /root \
     && git clone --depth 1 --branch v250.5 https://github.com/systemd/systemd.git \
@@ -314,7 +314,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         m4 \
         rsync \
         python3-pip \
-    && pip3 install --no-cache-dir --break-system-packages jinja2 \
+    && pip3 install --no-cache-dir jinja2 \
     # Build systemd
     && cd /root \
     && git clone --depth 1 --branch v250.5 https://github.com/systemd/systemd.git \
