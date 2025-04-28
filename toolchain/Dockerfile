@@ -1,5 +1,5 @@
 # Essential cross-compiling build tools for the reMarkable
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 ARG NGCONFIG="arm-remarkable-linux-gnueabihf"
 ARG NGCONFIG_AARCH64="aarch64-remarkable-linux-gnu"
 ARG CHOST="arm-linux-gnueabihf"
