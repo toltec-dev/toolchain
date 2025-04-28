@@ -2,8 +2,6 @@
 ARG FROM
 FROM $FROM
 
-COPY patch/* /
-
 # Build libcap 2.66 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
@@ -159,14 +157,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf libevdev \
     && find "$SYSROOT" -type l,f -name "*.la" -delete
 
-# Build OpenSSL 3.0.7 targeting armhf
+# Build OpenSSL 3.0.15 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Build OpenSSL
     && cd /root \
     && mkdir openssl \
     && cd openssl \
-    && curl https://www.openssl.org/source/openssl-3.0.7.tar.gz -o openssl.tar.gz \
-    && echo "83049d042a260e696f62406ac5c08bf706fd84383f945cf21bd61e9ed95c396e  openssl.tar.gz" | sha256sum -c \
+    && curl https://www.openssl.org/source/openssl-3.0.15.tar.gz -Lo openssl.tar.gz \
+    && echo "23c666d0edf20f14249b3d8f0368acaee9ab585b09e1de82107c66e1f3ec9533  openssl.tar.gz" | sha256sum -c \
     && tar --strip-components=1 -xf openssl.tar.gz \
     && rm openssl.tar.gz \
     && ./Configure --prefix=/usr --cross-compile-prefix="$CROSS_COMPILE" linux-armv4 \
@@ -194,7 +192,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf libcurl \
     && find "$SYSROOT" -type l,f -name "*.la" -delete
 
-# Build breakpad 0.1 (216cea7bca) targeting armhf
+# Build breakpad 0.1 (f88a1aa2af) targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
@@ -220,8 +218,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd src \
     # fetch updates default.xml with seemingly useless diffs that break checkout later
     && git checkout HEAD -- default.xml \
-    && git checkout 216cea7bca53fa441a3ee0d0f5fd339a3a894224 \
-    && git apply < /breakpad-216cea7bca-fix-int-type.patch \
+    && git checkout f88a1aa2af1d1fd795716365245761b89041139d \
     && ./configure --prefix=/usr --host="$CHOST" \
     && make \
     && DESTDIR="$SYSROOT" make install \
