@@ -241,7 +241,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build libcap 2.66 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    . /opt/x-tools/switch-aarch64.sh \
+    source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -272,7 +272,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build util-linux 2.37.4 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    . /opt/x-tools/switch-aarch64.sh \
+    source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -306,7 +306,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build systemd 250 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && . /opt/x-tools/switch-aarch64.sh \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -347,7 +347,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build zlib 1.2.11 and libpng 1.6.39 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && . /opt/x-tools/switch-aarch64.sh \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -383,7 +383,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build libevdev 1.12.1 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && . /opt/x-tools/switch-aarch64.sh \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Build libevdev
     && cd /root \
     && mkdir libevdev \
@@ -402,7 +402,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build OpenSSL 3.0.15 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && . /opt/x-tools/switch-aarch64.sh \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Build OpenSSL
     && cd /root \
     && mkdir openssl \
@@ -420,7 +420,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build libcurl 7.82.0 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && . /opt/x-tools/switch-aarch64.sh \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Build libcurl
     && cd /root \
     && mkdir libcurl \
@@ -439,7 +439,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build breakpad 0.1 (f88a1aa2af) targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && . /opt/x-tools/switch-aarch64.sh \
+    && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
