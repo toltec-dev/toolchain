@@ -26,7 +26,7 @@ jobs:
         run: ./scripts/build -p -g -s toolchain
   stage2:
     name: Stage 2
-    if: ${{ !contains(github.event.head_commit.message, '[no stage2]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[no stage2]') && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     needs: stage1
     steps:
@@ -44,7 +44,7 @@ jobs:
         run: ./scripts/build -p -g -s base
   stage3:
     name: Stage 3
-    if: ${{ !contains(github.event.head_commit.message, '[no stage3]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[no stage3]') && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     needs: stage2
     strategy:
