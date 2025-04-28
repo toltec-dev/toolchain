@@ -13,18 +13,18 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         ca-certificates \
         cmake \
         curl \
-        gcc-10 \
-        g++-10 \
+        gcc-12 \
+        g++-12 \
         meson \
         pkg-config \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt \
-    # Force use of gcc and g++ 10
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 \
-        --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-10  \
-        --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-10  \
-        --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-10  \
-        --slave /usr/bin/g++ g++ /usr/bin/g++-10
+    # Force use of gcc and g++ 12
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 \
+        --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-12  \
+        --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-12  \
+        --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-12 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
 # Build latest crosstool-ng and use it to build the toolchain
 COPY crosstool-ng "/$NGCONFIG"
