@@ -54,11 +54,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cp "samples/$NGCONFIG/0004-fix-glibc-dso-link.patch" packages/glibc/2.35/ \
     && ./bootstrap \
     && ./configure --enable-local \
-    && make -j4 \
+    && make -j$(nproc) \
     # Build the toolchain and install it in the following folder
     && export CT_PREFIX="/opt/x-tools" \
     && ./ct-ng "$NGCONFIG" \
-    && ./ct-ng build \
+    && ./ct-ng build.$(nproc) \
     && cd .. \
     # Clean up
     && rm -rf crosstool-ng \
@@ -73,14 +73,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 		&& echo "CT_ALLOW_BUILD_AS_ROOT_SURE=y" >> samples/$NGCONFIG_AARCH64/crosstool.config \
 		&& ./bootstrap \
 		&& ./configure --enable-local \
-		&& make -j4 \
+		&& make -j$(nproc) \
 		# Build the toolchain and install it in the following folder
 		&& export CT_PREFIX="/opt/x-tools" \
 		&& ./ct-ng "$NGCONFIG_AARCH64" \
 		&& ./ct-ng oldconfig \
 		&& ./ct-ng upgradeconfig \
 		&& ./ct-ng updatetools \
-    && ./ct-ng build \
+    && ./ct-ng build.$(nproc) \
 		&& cd .. \
     # Clean up
 		&& rm -rf crosstool-ng \
@@ -123,7 +123,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         --enable-sha256 \
         --prefix=/ \
         --exec-prefix=/usr \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && cd .. \
     # Clean up

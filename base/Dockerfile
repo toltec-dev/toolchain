@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         CC="${CROSS_COMPILE}gcc" \
         RANLIB="${CROSS_COMPILE}ranlib" \
         lib=lib \
+				-j$(nproc) \
     && make install \
         RAISE_SETFCAP=no \
         lib=lib \
@@ -48,7 +49,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd util-linux \
     && ./autogen.sh \
     && ./configure --host="$CHOST" \
-    && make LDFLAGS="-Wl,-rpath-link,.libs" \
+    && make LDFLAGS="-Wl,-rpath-link,.libs" -j$(nproc) \
     && make install DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
@@ -119,14 +120,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && CC="${CROSS_COMPILE}gcc" CFLAGS=-fPIC ./configure \
         --static \
         --prefix=/usr \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Build dynamic libpng
     && git clone --depth 1 --branch v1.6.39 git://git.code.sf.net/p/libpng/code libpng \
     && cd libpng \
     && ./configure --prefix=/usr --host="$CHOST" \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Clean up
@@ -150,7 +151,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && tar --strip-components=1 -xf libevdev.tar.xz \
     && rm libevdev.tar.xz \
     && ./configure --prefix=/usr --host="$CHOST" \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Clean up
@@ -168,7 +169,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && tar --strip-components=1 -xf openssl.tar.gz \
     && rm openssl.tar.gz \
     && ./Configure --prefix=/usr --cross-compile-prefix="$CROSS_COMPILE" linux-armv4 \
-    && make \
+    && make -j$(nproc) \
     && make DESTDIR="$SYSROOT" install_sw \
     && cd .. \
     # Clean up
@@ -185,7 +186,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && tar --strip-components=1 -xf curl.tar.xz \
     && rm curl.tar.xz \
     && ./configure --prefix=/usr --host="$CHOST" --with-openssl \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Clean up
@@ -220,7 +221,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && git checkout HEAD -- default.xml \
     && git checkout f88a1aa2af1d1fd795716365245761b89041139d \
     && ./configure --prefix=/usr --host="$CHOST" \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd ../.. \
     # Clean up
@@ -240,7 +241,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build libcap 2.66 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    env /opt/x-tools/switch-aarch64.sh \
+    . /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -256,6 +257,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         CC="${CROSS_COMPILE}gcc" \
         RANLIB="${CROSS_COMPILE}ranlib" \
         lib=lib \
+				-j$(nproc) \
     && make install \
         RAISE_SETFCAP=no \
         lib=lib \
@@ -270,7 +272,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build util-linux 2.37.4 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    env /opt/x-tools/switch-aarch64.sh \
+    . /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -286,7 +288,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd util-linux \
     && ./autogen.sh \
     && ./configure --host="$CHOST" \
-    && make LDFLAGS="-Wl,-rpath-link,.libs" \
+    && make LDFLAGS="-Wl,-rpath-link,.libs" -j$(nproc) \
     && make install DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
@@ -304,7 +306,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build systemd 250 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && env /opt/x-tools/switch-aarch64.sh \
+    && . /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -345,7 +347,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build zlib 1.2.11 and libpng 1.6.39 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && env /opt/x-tools/switch-aarch64.sh \
+    && . /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -359,14 +361,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && CC="${CROSS_COMPILE}gcc" CFLAGS=-fPIC ./configure \
         --static \
         --prefix=/usr \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Build dynamic libpng
     && git clone --depth 1 --branch v1.6.39 git://git.code.sf.net/p/libpng/code libpng \
     && cd libpng \
     && ./configure --prefix=/usr --host="$CHOST" \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Clean up
@@ -381,7 +383,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build libevdev 1.12.1 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && env /opt/x-tools/switch-aarch64.sh \
+    && . /opt/x-tools/switch-aarch64.sh \
     # Build libevdev
     && cd /root \
     && mkdir libevdev \
@@ -391,7 +393,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && tar --strip-components=1 -xf libevdev.tar.xz \
     && rm libevdev.tar.xz \
     && ./configure --prefix=/usr --host="$CHOST" \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Clean up
@@ -400,7 +402,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build OpenSSL 3.0.15 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && env /opt/x-tools/switch-aarch64.sh \
+    && . /opt/x-tools/switch-aarch64.sh \
     # Build OpenSSL
     && cd /root \
     && mkdir openssl \
@@ -410,7 +412,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && tar --strip-components=1 -xf openssl.tar.gz \
     && rm openssl.tar.gz \
     && ./Configure --prefix=/usr --cross-compile-prefix="$CROSS_COMPILE" linux-aarch64 \
-    && make \
+    && make -j$(nproc) \
     && make DESTDIR="$SYSROOT" install_sw \
     && cd .. \
     # Clean up
@@ -418,7 +420,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build libcurl 7.82.0 targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && env /opt/x-tools/switch-aarch64.sh \
+    && . /opt/x-tools/switch-aarch64.sh \
     # Build libcurl
     && cd /root \
     && mkdir libcurl \
@@ -428,7 +430,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && tar --strip-components=1 -xf curl.tar.xz \
     && rm curl.tar.xz \
     && ./configure --prefix=/usr --host="$CHOST" --with-openssl \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
     # Clean up
@@ -437,7 +439,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Build breakpad 0.1 (f88a1aa2af) targeting aarch64
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && env /opt/x-tools/switch-aarch64.sh \
+    && . /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
@@ -464,7 +466,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && git checkout HEAD -- default.xml \
     && git checkout f88a1aa2af1d1fd795716365245761b89041139d \
     && ./configure --prefix=/usr --host="$CHOST" \
-    && make \
+    && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd ../.. \
     # Clean up
