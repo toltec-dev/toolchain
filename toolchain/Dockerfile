@@ -40,14 +40,16 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         help2man \
         libncurses-dev \
         libtool-bin \
+        rsync \
         texinfo \
         unzip \
     # Build crosstool-ng itself
     && cd /root \
     && git clone https://github.com/crosstool-ng/crosstool-ng \
     && cd crosstool-ng \
-    && git checkout a21748bd5342b72ddf5bfef782e058c3245161f7 \
+    && git checkout cf25b4edb096c9b815daa202968c15906b8047e5 \
     && mv "/$NGCONFIG" samples \
+    && cp "samples/$NGCONFIG/0004-fix-glibc-dso-link.patch" packages/glibc/2.35/ \
     && ./bootstrap \
     && ./configure --enable-local \
     && make \
@@ -58,8 +60,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf crosstool-ng \
-    && find "/opt/x-tools/$NGCONFIG/$NGCONFIG" -type l,f -name "*.la" \
-        | xargs --no-run-if-empty rm \
+    && find "/opt/x-tools/$NGCONFIG/$NGCONFIG" -type l,f -name "*.la" -delete \
     && rm "/opt/x-tools/$NGCONFIG/build.log.bz2" \
     && apt-get autoremove -y \
         autoconf \
@@ -72,6 +73,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         help2man \
         libncurses-dev \
         libtool-bin \
+        rsync \
         texinfo \
         unzip \
     && apt-get clean \
@@ -90,9 +92,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         libssl-dev \
         libtool-bin \
     && cd /root \
-    && git clone https://git.yoctoproject.org/git/opkg \
+    && git clone --depth 1 --branch v0.4.5 https://git.yoctoproject.org/git/opkg \
     && cd opkg \
-    && git checkout 532bdf544ae598aa68a8c6dfd05c280d2a04e837 \
     && ./autogen.sh \
     && ./configure \
         --enable-sha256 \
