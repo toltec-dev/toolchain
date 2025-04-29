@@ -65,7 +65,7 @@ jobs:
           docker load --input ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-toolchain.tar.gz
           rm ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-toolchain.tar.gz
       - name: Build and push toolchain
-        run: docker context use default && ./scripts/build -g -s base
+        run: docker buildx use default && ./scripts/build -g -s base
       - name: Export the container
         run: docker image save ghcr.io/toltec-dev/base | gzip > ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
       - name: Upload artifact
@@ -101,4 +101,4 @@ jobs:
           docker load --input ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
           rm ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
       - name: Build and push toolchain
-        run: docker context use default && ./scripts/build -g -s ${{ matrix.target }}
+        run: docker buildx use default && ./scripts/build -g -s ${{ matrix.target }}
