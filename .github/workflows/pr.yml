@@ -25,7 +25,9 @@ jobs:
         run: ./scripts/build -g -s toolchain
       - name: Export and upload the container
         run: |
-          apt-get install uuid-runtime
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -y
+          apt-get install -y uuid-runtime
           UUID = $(uuidgen)
           echo "UUID=$UUID" >> "$GITHUB_ENV"
           echo "UUID=$UUID" >> "$GITHUB_OUTPUT"
