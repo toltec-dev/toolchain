@@ -80,7 +80,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 		&& ./ct-ng "$NGCONFIG_AARCH64" \
 		&& ./ct-ng oldconfig \
 		&& ./ct-ng upgradeconfig \
-		&& ./ct-ng updatetools \
+    # Disable because GNU Savannah is very unstable
+		# && ./ct-ng updatetools \
     && ./ct-ng build.$(nproc) \
 		&& cd .. \
     # Clean up
