@@ -72,6 +72,8 @@ def build(
         cmd.extend(["--cache-to", f"type=gha,mode=max,scope={image}"])
     if publish:
         cmd.extend(["--push"])
+    else:
+        cmd.extend(["--load"])
     cmd.extend(["--tag", f"ghcr.io/toltec-dev/{image}:{version}", "."])
     run_cmd(cmd)
 
