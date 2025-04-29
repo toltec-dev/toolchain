@@ -28,9 +28,6 @@ jobs:
       - name: Export the container
         id: export_container_uuid
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update -y
-          sudo apt-get install -y uuid-runtime
           export UUID=$(uuidgen)
           echo "UUID=$UUID" >> "$GITHUB_ENV"
           echo "UUID=$UUID" >> "$GITHUB_OUTPUT"
