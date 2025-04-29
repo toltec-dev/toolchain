@@ -28,7 +28,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update -y
           sudo apt-get install -y uuid-runtime
-          UUID = $(uuidgen)
+          export UUID=$(uuidgen)
           echo "UUID=$UUID" >> "$GITHUB_ENV"
           echo "UUID=$UUID" >> "$GITHUB_OUTPUT"
           docker image save ghcr.io/toltec-dev/toolchain | gzip > ${{ runner.temp }}/$UUID-toolchain.tar.gz
