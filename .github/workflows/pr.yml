@@ -10,8 +10,6 @@ jobs:
   stage1:
     name: Stage 1
     runs-on: ubuntu-latest
-    outputs:
-      UUID: ${{ steps.export_container_uuid.outputs.UUID }}
     steps:
       - name: Checkout the Git repository
         uses: actions/checkout@v3
@@ -26,20 +24,14 @@ jobs:
       - name: Build and push toolchain
         run: ./scripts/build -g -s toolchain
       - name: Export the container
-        id: export_container_uuid
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update -y
-          sudo apt-get install -y uuid-runtime
-          export UUID=$(uuidgen)
-          echo "UUID=$UUID" >> "$GITHUB_ENV"
-          echo "UUID=$UUID" >> "$GITHUB_OUTPUT"
-          docker image save ghcr.io/toltec-dev/toolchain | gzip > ${{ runner.temp }}/$UUID-toolchain.tar.gz
+          docker image save ghcr.io/toltec-dev/toolchain | gzip > ${{ runner.temp }}/toolchain.tar.gz
       - name: Upload artifact
         uses: actions/upload-artifact@v4 
         with:
-          name: ${{ env.UUID }}-toolchain
-          path: ${{ runner.temp }}/${{ env.UUID }}-toolchain.tar.gz
+          name: toolchain
+          path: ${{ runner.temp }}/toolchain.tar.gz
+          retention-days: 1
   stage2:
     name: Stage 2
     runs-on: ubuntu-latest
@@ -48,7 +40,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ needs.stage1.outputs.UUID }}-toolchain
+          name: toolchain
           path: ${{ runner.temp }}
       - name: Checkout the Git repository
         uses: actions/checkout@v3
@@ -62,8 +54,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Import container
         run: |
-          docker load --input ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-toolchain.tar.gz
-          rm ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-toolchain.tar.gz
+          docker load --input ${{ runner.temp }}/toolchain.tar.gz
+          rm ${{ runner.temp }}/toolchain.tar.gz
       - name: Build and push toolchain
         run: ./scripts/build -g -s base
       - name: Export the container
@@ -71,8 +63,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4 
         with:
-          name: ${{ needs.stage1.outputs.UUID }}-base
-          path: ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
+          name: base
+          path: ${{ runner.temp }}/base.tar.gz
   stage3:
     name: Stage 3
     runs-on: ubuntu-latest
@@ -84,7 +76,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ needs.stage1.outputs.UUID }}-base
+          name: base
           path: ${{ runner.temp }}
       - name: Checkout the Git repository
         uses: actions/checkout@v3
@@ -98,7 +90,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Import container
         run: |
-          docker load --input ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
-          rm ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
+          docker load --input ${{ runner.temp }}/base.tar.gz
+          rm ${{ runner.temp }}/base.tar.gz
       - name: Build and push toolchain
         run: ./scripts/build -g -s ${{ matrix.target }}
