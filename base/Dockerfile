@@ -19,7 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         CC="${CROSS_COMPILE}gcc" \
         RANLIB="${CROSS_COMPILE}ranlib" \
         lib=lib \
-				-j$(nproc) \
+        -j$(nproc) \
     && make install \
         RAISE_SETFCAP=no \
         lib=lib \
@@ -257,7 +257,7 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
         CC="${CROSS_COMPILE}gcc" \
         RANLIB="${CROSS_COMPILE}ranlib" \
         lib=lib \
-				-j$(nproc) \
+        -j$(nproc) \
     && make install \
         RAISE_SETFCAP=no \
         lib=lib \
@@ -441,21 +441,21 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
     # Install build dependencies
-		&& apt-get update -y \
-		&& apt-get install -y --no-install-recommends \
-		    git \
-	  && cd /root \
-		&& git clone --depth 1 --branch libdrm-imx-2.4.109 https://github.com/nxp-imx/libdrm-imx \
-		&& cd libdrm-imx \
-		&& meson -Dvivante=true -Dprefix=/usr --cross-file /usr/share/meson/cross/aarch64-remarkable-linux-gnu builddir/ \
-		&& DESTDIR=$SYSROOT ninja -C builddir/ install \
-		&& cd .. \
-		# Clean up
-		&& rm -rf libdrm-imx \
-		&& apt-get autoremove -y \
-		    git \
-		&& apt-get clean \
-		&& rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        git \
+    && cd /root \
+    && git clone --depth 1 --branch libdrm-imx-2.4.109 https://github.com/nxp-imx/libdrm-imx \
+    && cd libdrm-imx \
+    && meson -Dvivante=true -Dprefix=/usr --cross-file /usr/share/meson/cross/aarch64-remarkable-linux-gnu builddir/ \
+    && DESTDIR=$SYSROOT ninja -C builddir/ install \
+    && cd .. \
+    # Clean up
+    && rm -rf libdrm-imx \
+    && apt-get autoremove -y \
+        git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build breakpad 0.1 (f88a1aa2af) targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
