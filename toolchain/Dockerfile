@@ -71,6 +71,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 		&& git checkout 7396dbf0a0c0883b1ead50dd442b45a646c21618 \
 		&& echo "CT_ALLOW_BUILD_AS_ROOT=y" >> samples/$NGCONFIG_AARCH64/crosstool.config \
 		&& echo "CT_ALLOW_BUILD_AS_ROOT_SURE=y" >> samples/$NGCONFIG_AARCH64/crosstool.config \
+		&& echo "CT_GCC_V_11=y" >> samples/$NGCONFIG_AARCH64/crosstool.config \
 		&& echo "CT_LOG_PROGRESS_BAR=n" >> samples/$NGCONFIG_AARCH64/crosstool.config \
 		&& ./bootstrap \
 		&& ./configure --enable-local \
