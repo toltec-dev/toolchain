@@ -107,4 +107,4 @@ RUN curl --proto '=https' --tlsv1.2 -sSf \
     && curl --proto '=https' --tlsv1.2 -sSf \
         https://toltec-dev.org/thirdparty/lib/libqsgepaper-rmpp-3.18.2.3.so \
         -o "$SYSROOT_AARCH64/usr/lib/libqsgepaper.so" \
-    && echo "ca98d0048ed582540d8a71b8aa91b83f7cb6a5edce318d7a0f24f839cbe90b64  $SYSROOT_AARCH64/usr/lib/libqsgepaper.so" | sha256sum -c
+    && echo "ca98d0048ed582540d8a71b8aa91b83f7cb6a5edce318d7a0f24f839cbe90b64  $SYSROOT_AARCH64/usr/lib/libqsgepaper-rmpp.so" | sha256sum -c
