@@ -91,7 +91,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
 # Add the closed-source libqsgepaper library
-RUN curl --proto '=https' --tlsv1.2 -sSf \
+RUN curl --proto '=https' --tlsv1.2 -sSLf \
         https://github.com/asivery/epfb-re/raw/e0e603b318a9b7da2d508eeb5d6acc4d0c48d931/epframebuffer.h \
         -o "$SYSROOT/usr/include/epframebuffer.h" \
     && echo "cbc8a4639940e7d5958b845037a109987d08ffd7576daa12e127784f13e2d600  $SYSROOT/usr/include/epframebuffer.h" | sha256sum -c \
