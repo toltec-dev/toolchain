@@ -49,7 +49,7 @@ _Deprecation notice: Images of the v1.x and v2.x series are kept for compatibili
         <td>⩽ 2.5.0.26</td>
         <td>⩾ 2.6.1.71</td>
         <td>⩾ 2.9.0.153</td>
-        <td>⩾ 3.18.0.153</td>
+        <td>⩾ 3.18.2.3</td>
     </tr>
     <tr>
         <th colspan="5" align="left">
