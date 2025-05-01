@@ -40,6 +40,7 @@ jobs:
         with:
           name: ${{ env.UUID }}-toolchain
           path: ${{ runner.temp }}/${{ env.UUID }}-toolchain.tar.gz
+          retention-days: 1
   stage2:
     name: Stage 2
     runs-on: ubuntu-latest
@@ -80,6 +81,7 @@ jobs:
         with:
           name: ${{ needs.stage1.outputs.UUID }}-base
           path: ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
+          retention-days: 1
   stage3:
     name: Stage 3
     runs-on: ubuntu-latest
