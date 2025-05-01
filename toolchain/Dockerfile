@@ -152,6 +152,17 @@ ENV ARCH=arm \
     SYSROOT_AARCH64="/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot" \
     NGCONFIG="$NGCONFIG" \
     TARGET_PREFIX="$CHOST"
+	
+RUN touch /opt/x-tools/switch-arm.sh && chmod +x /opt/x-tools/switch-arm.sh && cat <<EOF > /opt/x-tools/switch-arm.sh
+export ARCH=arm
+export CHOST="$CHOST"
+export CROSS_COMPILE="$CHOST-"
+export PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/opt/lib/pkgconfig"
+export PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
+SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
+NGCONFIG="$NGCONFIG"
+export TARGET_PREFIX="$CHOST"
+EOF
 
 RUN touch /opt/x-tools/switch-aarch64.sh && chmod +x /opt/x-tools/switch-aarch64.sh && cat <<EOF > /opt/x-tools/switch-aarch64.sh
 export ARCH=aarch64
@@ -167,6 +178,7 @@ EOF
 
 # Configure Opkg
 COPY opkg /opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/etc/opkg
+COPY opkg-aarch64 /opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot/etc/opkg
 RUN mv /usr/bin/opkg /usr/bin/opkg-bin \
     && printf "#!/bin/bash\n/usr/bin/opkg-bin --offline-root \"$SYSROOT\" --host-cache-dir \"\$@\"\n" > /usr/bin/opkg \
     && printf "#!/bin/bash\n/usr/bin/opkg-bin --offline-root \"$SYSROOT_AARCH64\" --host-cache-dir \"\$@\"\n" > /usr/bin/opkg-aarch64 \
