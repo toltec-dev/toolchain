@@ -1,4 +1,4 @@
-# Rust nightly targeting the armv7-hf and aarch64 architecture
+# Rust nightly targeting the armv7-hf and aarch64 architectures
 ARG FROM
 FROM $FROM
 
