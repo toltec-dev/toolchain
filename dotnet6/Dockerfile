@@ -4,7 +4,7 @@ FROM $FROM
 
 # Install dotnet
 RUN export DEBIAN_FRONTEND=noninteractive \
-    && curl https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -o packages-microsoft-prod.deb \
+    && curl https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -o packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
     && apt-get update -y \

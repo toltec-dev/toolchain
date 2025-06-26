@@ -1,0 +1,24 @@
+This change ported from 2.31 patch adding support for ARC architecture:
+https://github.com/crosstool-ng/crosstool-ng/blob/cf25b4edb096c9b815daa202968c15906b8047e5/packages/glibc/2.31/0001-Add-ARC-architecture.patch#L368-L382
+
+The patch is not included in glibc >2.31, and on gcc 10 the build fails with something among these lines:
+
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/10/libstdc++.so: undefined reference to `arc4random@GLIBC_2.36'
+
+Skipping C++ DSO linking in support tests seems to fix the issue.
+
+--- a/support/Makefile
++++ b/support/Makefile
+@@ -235,12 +235,7 @@ CFLAGS-support_paths.c = \
+ CFLAGS-timespec.c += -fexcess-precision=standard
+ CFLAGS-timespec-time64.c += -fexcess-precision=standard
+
+-ifeq (,$(CXX))
+ LINKS_DSO_PROGRAM = links-dso-program-c
+-else
+-LINKS_DSO_PROGRAM = links-dso-program
+-LDLIBS-links-dso-program = -lstdc++ -lgcc -lgcc_s $(libunwind)
+-endif
+
+ ifeq (yes,$(have-selinux))
+ LDLIBS-$(LINKS_DSO_PROGRAM) += -lselinux

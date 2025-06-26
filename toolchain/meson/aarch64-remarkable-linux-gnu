@@ -1,0 +1,15 @@
+[properties]
+sys_root = '/opt/x-tools/aarch64-remarkable-linux-gnu/aarch64-remarkable-linux-gnu/sysroot'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'armv8'
+endian = 'little'
+
+[binaries]
+c = 'aarch64-remarkable-linux-gnu-gcc'
+cpp = 'aarch64-remarkable-linux-gnu-g++'
+ar = 'aarch64-remarkable-linux-gnu-ar'
+strip = 'aarch64-remarkable-linux-gnu-strip'
+pkgconfig = 'pkg-config'
