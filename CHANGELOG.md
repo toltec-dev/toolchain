@@ -2,6 +2,10 @@
 
 ### v3.x
 
+### v3.3 - 2025-09-10
+
+* Use latest rust nightly
+
 ### v3.2 - 2024-09-11
 
 * Use latest rust nightly
