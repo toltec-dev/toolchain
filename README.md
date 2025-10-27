@@ -42,15 +42,17 @@ _Deprecation notice: Images of the v1.x and v2.x series are kept for compatibili
         <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v1.x">1.x</a></td>
         <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v2.x">2.x</a></td>
         <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v3.x">3.x</a></td>
+        <th align="left"><a href="https://github.com/toltec-dev/toolchain/tree/v4.x">4.x</a></td>
     </tr>
     <tr>
         <th>Compatible reMarkable updates</td>
         <td>⩽ 2.5.0.26</td>
         <td>⩾ 2.6.1.71</td>
         <td>⩾ 2.9.0.153</td>
+        <td>⩾ 3.18.2.3</td>
     </tr>
     <tr>
-        <th colspan="3" align="left">
+        <th colspan="5" align="left">
             <a href="https://github.com/orgs/toltec-dev/packages/container/package/toolchain">toolchain</a> Image
         </th>
     </tr>
@@ -59,15 +61,17 @@ _Deprecation notice: Images of the v1.x and v2.x series are kept for compatibili
         <td>4.9</td>
         <td>4.14</td>
         <td>5.4.70</td>
+        <td>6.1.55</td>
     </tr>
     <tr>
         <td>glibc</td>
         <td>2.27</td>
         <td>2.31</td>
         <td>2.31</td>
+        <td>2.35</td>
     </tr>
     <tr>
-        <th colspan="3" align="left">
+        <th colspan="5" align="left">
             <a href="https://github.com/orgs/toltec-dev/packages/container/package/base">base</a> Image
         </th>
     </tr>
@@ -76,55 +80,70 @@ _Deprecation notice: Images of the v1.x and v2.x series are kept for compatibili
         <td>2.25</td>
         <td>2.32</td>
         <td>2.32</td>
+        <td>2.66</td>
     </tr>
     <tr>
         <td>util-linux</td>
         <td>2.32</td>
         <td>2.36.1</td>
         <td>2.36.1</td>
+        <td>2.37.4</td>
     </tr>
     <tr>
         <td>libsystemd</td>
         <td>237</td>
         <td>244</td>
         <td>244</td>
+        <td>250</td>
     </tr>
     <tr>
         <td>zlib</td>
-        <td colspan="2">1.2.11</td>
+        <td align=center colspan="4">1.2.11</td>
     </tr>
     <tr>
         <td>libpng</td>
         <td>1.6.34</td>
         <td>1.6.37</td>
         <td>1.6.37</td>
+        <td>1.6.39</td>
     </tr>
     <tr>
         <td>libevdev</td>
         <td>1.5.8</td>
         <td>1.9.1</td>
         <td>1.9.1</td>
+        <td>1.12.1</td>
     </tr>
     <tr>
         <td>OpenSSL</td>
         <td>—</td>
         <td>1.1.1g</td>
         <td>1.1.1g</td>
+        <td>3.0.15</td>
     </tr>
     <tr>
         <td>libcurl</td>
         <td>—</td>
         <td>7.69.1</td>
         <td>7.69.1</td>
+        <td>7.82.0</td>
     </tr>
     <tr>
         <td>libbreakpad</td>
         <td>—</td>
         <td>0.1 (db1cda2653)</td>
         <td>0.1 (db1cda2653)</td>
+        <td>0.1 (f88a1aa2af)</td>
     </tr>
     <tr>
-        <th colspan="3" align="left">
+        <td>libdrm</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td>imx-2.4.109</td>
+    </tr>
+    <tr>
+        <th colspan="5" align="left">
             <a href="https://github.com/orgs/toltec-dev/packages/container/package/qt">qt</a> Image
         </th>
     </tr>
@@ -133,6 +152,7 @@ _Deprecation notice: Images of the v1.x and v2.x series are kept for compatibili
         <td>5.11.3</td>
         <td>5.15.1</td>
         <td>5.15.1 (<a href="https://github.com/reMarkable/qtbase">reMarkable qtbase</a>)</td>
+        <td>6.7.3</td>
     </tr>
 </table>
 
