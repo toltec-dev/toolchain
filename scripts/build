@@ -35,6 +35,7 @@ parser.add_argument(
 parser.add_argument(
     "-v", help="Set version number", default="latest", metavar="VERSION"
 )
+parser.add_argument("-c", help="Set build context", default=None, metavar="CONTEXT")
 
 
 def run_cmd(line: list[str]) -> None:
@@ -56,7 +57,12 @@ def run_cmd(line: list[str]) -> None:
 
 
 def build(
-    image: str, version: str, publish: bool, github: bool, _from: tp.Optional[str] = None
+    image: str,
+    version: str,
+    publish: bool,
+    github: bool,
+    _from: tp.Optional[str] = None,
+    context: tp.Optional[str] = None,
 ) -> None:
     cmd: list[str] = [
         "docker",
@@ -70,8 +76,12 @@ def build(
     if github:
         cmd.extend(["--cache-from", f"type=gha,scope={image}"])
         cmd.extend(["--cache-to", f"type=gha,mode=max,scope={image}"])
+    if context:
+        cmd.extend(["--build-context", context])
     if publish:
         cmd.extend(["--push"])
+    else:
+        cmd.extend(["--load"])
     cmd.extend(["--tag", f"ghcr.io/toltec-dev/{image}:{version}", "."])
     run_cmd(cmd)
 
@@ -82,12 +92,12 @@ os.chdir(args.d)
 workdir = os.getcwd()
 if args.s:
     os.chdir(args.s)
-    build(args.s, args.v, args.p, args.g, requires[args.s])
+    build(args.s, args.v, args.p, args.g, requires[args.s], args.c)
     os.chdir(workdir)
 else:
     for i in builds:
         print(f"Building {i}...")
         os.chdir(i)
-        build(i, args.v, args.p, args.g, requires[i])
+        build(i, args.v, args.p, args.g, requires[i], args.c)
         os.chdir(workdir)
 os.chdir(curdir)
