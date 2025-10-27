@@ -85,7 +85,9 @@ jobs:
   stage3:
     name: Stage 3
     runs-on: ubuntu-latest
-    needs: stage2
+    needs:
+      - stage1
+      - stage2
     strategy:
       matrix:
         target: [golang, python, qt, rust, dotnet6]
@@ -114,7 +116,7 @@ jobs:
       - name: Build and push toolchain
         run: ./scripts/build -g -s ${{ matrix.target }} -c ghcr.io/toltec-dev/base=oci-layout://${{ runner.temp }}
       - name: Export the container
-        run: docker image save ghcr.io/toltec-dev/${{ matrix.target }} | gzip > ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
+        run: docker image save ghcr.io/toltec-dev/${{ matrix.target }} | gzip > ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-${{ matrix.target }}.tar.gz
       - name: Upload artifact
         uses: actions/upload-artifact@v4 
         with:
