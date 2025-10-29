@@ -17,6 +17,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         g++-11 \
         meson \
         pkg-config \
+		git \
+		git-lfs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt \
     # Force use of gcc and g++ 11
@@ -38,7 +40,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         file \
         flex \
         gawk \
-        git \
         help2man \
         libncurses-dev \
         libtool-bin \
@@ -96,7 +97,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         file \
         flex \
         gawk \
-        git \
         help2man \
         libncurses-dev \
         libtool-bin \
@@ -112,7 +112,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         automake \
-        git \
         libarchive-dev \
         libcurl4-gnutls-dev \
         libgpgme-dev \
@@ -134,7 +133,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm /usr/lib/libopkg.la \
     && apt-get autoremove -y \
         automake \
-        git \
         libarchive-dev \
         libssl-dev \
         libtool-bin \
