@@ -244,7 +244,7 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
         DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
-    && rm -rf libcap
+    && rm -rf libcap'
 
 # Build util-linux 2.37.4 targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
