@@ -1,5 +1,13 @@
 ## Changelog
 
+### v4.x
+
+### v4.0 - 2025-10-29
+
+* Target 3.18+
+* Add support for rMPP and rMPPM
+* Install git and git-lfs by default
+
 ### v3.x
 
 ### v3.3 - 2025-09-10
