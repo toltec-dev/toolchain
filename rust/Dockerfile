@@ -12,5 +12,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y -q \
 # Add rust binaries to PATH
 ENV PATH="$PATH:/root/.cargo/bin"
 
+# Set default build target to armv7
+ENV CARGO_BUILD_TARGET="armv7-unknown-linux-gnueabihf"
+
 # Target reMarkable architecture by default
 COPY config /root/.cargo/config
