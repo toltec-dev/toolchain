@@ -417,7 +417,7 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && DESTDIR=$SYSROOT ninja -C builddir/ install \
     && cd .. \
     # Clean up
-    && rm -rf libdrm-imx
+    && rm -rf libdrm-imx'
 
 # Build breakpad 0.1 (f88a1aa2af) targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
