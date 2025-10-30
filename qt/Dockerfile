@@ -9,7 +9,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        git \
         libudev-dev \
     # Build Qt
     && cd /root \
@@ -86,7 +85,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf qt5-build \
     && find "$SYSROOT" -type l,f -name "*.la" | xargs --no-run-if-empty rm' \
     && apt-get autoremove -y \
-        git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 

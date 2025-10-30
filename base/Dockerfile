@@ -4,10 +4,6 @@ FROM $FROM
 
 # Build libcap 2.66 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
-    # Install build dependencies
-    && apt-get update -y \
-    && apt-get install -y --no-install-recommends \
-        git \
     # Build libcap
     && cd /root \
     && git clone --depth 1 --branch libcap-2.66 git://git.kernel.org/pub/scm/libs/libcap/libcap.git \
@@ -26,11 +22,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
-    && rm -rf libcap \
-    && apt-get autoremove -y \
-        git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf libcap
 
 # Build util-linux 2.37.4 targeting armhf
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -41,7 +33,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         autopoint \
         bison \
         gettext \
-        git \
         libtool \
     # Build util-linux
     && cd /root \
@@ -60,7 +51,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         autopoint \
         bison \
         gettext \
-        git \
         libtool \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
@@ -71,7 +61,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         gettext \
-        git \
         gperf \
         m4 \
         rsync \
@@ -97,7 +86,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # TODO: remove pip packages as well
     && apt-get autoremove -y \
         gettext \
-        git \
         gperf \
         m4 \
         rsync \
@@ -111,7 +99,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         automake \
-        git \
         libtool \
     # Build static zlib
     && cd /root \
@@ -135,7 +122,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && find "$SYSROOT" -type l,f -name "*.la" -delete \
     && apt-get autoremove -y \
         automake \
-        git \
         libtool \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
@@ -198,7 +184,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        git \
         zlib1g-dev \
         libssl-dev \
     # breakpad's build tools require python2 to be available as python on the path
@@ -233,7 +218,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         depot_tools \
         .pyenv \
     && apt-get autoremove -y \
-        git \
         zlib1g-dev \
         libssl-dev \
     && apt-get clean \
@@ -242,10 +226,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 # Build libcap 2.66 targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
-    # Install build dependencies
-    && apt-get update -y \
-    && apt-get install -y --no-install-recommends \
-        git \
     # Build libcap
     && cd /root \
     && git clone --depth 1 --branch libcap-2.66 git://git.kernel.org/pub/scm/libs/libcap/libcap.git \
@@ -264,11 +244,7 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
         DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
-    && rm -rf libcap \
-    && apt-get autoremove -y \
-        git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
+    && rm -rf libcap'
 
 # Build util-linux 2.37.4 targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
@@ -280,7 +256,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
         autopoint \
         bison \
         gettext \
-        git \
         libtool \
     # Build util-linux
     && cd /root \
@@ -299,7 +274,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
         autopoint \
         bison \
         gettext \
-        git \
         libtool \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
@@ -311,7 +285,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         gettext \
-        git \
         gperf \
         m4 \
         rsync \
@@ -337,7 +310,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     # TODO: remove pip packages as well
     && apt-get autoremove -y \
         gettext \
-        git \
         gperf \
         m4 \
         rsync \
@@ -352,7 +324,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         automake \
-        git \
         libtool \
     # Build static zlib
     && cd /root \
@@ -376,7 +347,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && find "$SYSROOT" -type l,f -name "*.la" -delete \
     && apt-get autoremove -y \
         automake \
-        git \
         libtool \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
@@ -440,10 +410,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
 # Build libdrm (imx fork) 2.4.109 targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && source /opt/x-tools/switch-aarch64.sh \
-    # Install build dependencies
-    && apt-get update -y \
-    && apt-get install -y --no-install-recommends \
-        git \
     && cd /root \
     && git clone --depth 1 --branch libdrm-imx-2.4.109 https://github.com/nxp-imx/libdrm-imx \
     && cd libdrm-imx \
@@ -451,11 +417,7 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && DESTDIR=$SYSROOT ninja -C builddir/ install \
     && cd .. \
     # Clean up
-    && rm -rf libdrm-imx \
-    && apt-get autoremove -y \
-        git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
+    && rm -rf libdrm-imx'
 
 # Build breakpad 0.1 (f88a1aa2af) targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
@@ -463,7 +425,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        git \
         zlib1g-dev \
         libssl-dev \
     # breakpad's build tools require python2 to be available as python on the path
@@ -498,7 +459,6 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
         depot_tools \
         .pyenv \
     && apt-get autoremove -y \
-        git \
         zlib1g-dev \
         libssl-dev \
     && apt-get clean \
