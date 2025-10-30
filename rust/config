@@ -1,6 +1,3 @@
-[build]
-target = "armv7-unknown-linux-gnueabihf"
-
 [target.armv7-unknown-linux-gnueabihf]
 linker = "arm-linux-gnueabihf-gcc"
 rustflags = [
@@ -9,4 +6,11 @@ rustflags = [
     "-C", "link-arg=-mfpu=neon",
     "-C", "link-arg=-mfloat-abi=hard",
     "-C", "link-arg=-mcpu=cortex-a9",
+]
+
+[target.aarch64-unknown-linux-gnu]
+linker = "aarch64-remarkable-linux-gnu-gcc"
+rustflags = [
+    "-C", "link-arg=-march=armv8-a+crc+crypto",
+	  "-C", "link-arg=-mtune=cortex-a53",
 ]

@@ -168,12 +168,13 @@ RUN touch /opt/x-tools/switch-aarch64.sh && chmod +x /opt/x-tools/switch-aarch64
 export ARCH=aarch64
 export CHOST="$CHOST_AARCH64"
 export CROSS_COMPILE="$CHOST_AARCH64-"
-export PATH="$PATH:/opt/x-tools/$NGCONFIG_AARCH64/bin"
+export PATH="\$PATH:/opt/x-tools/$NGCONFIG_AARCH64/bin"
 export PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot/usr/lib/pkgconfig:/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot/lib/pkgconfig:/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot/opt/lib/pkgconfig"
 export PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot"
 export SYSROOT="/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot"
 export NGCONFIG="$NGCONFIG_AARCH64"
 export TARGET_PREFIX="$CHOST_AARCH64"
+export CARGO_BUILD_TARGET="aarch64-unknown-linux-gnu"
 EOF
 
 # Configure Opkg
