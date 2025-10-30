@@ -12,5 +12,5 @@ rustflags = [
 linker = "aarch64-remarkable-linux-gnu-gcc"
 rustflags = [
     "-C", "link-arg=-march=armv8-a+crc+crypto",
-	  "-C", "link-arg=-mtune=cortex-a53",
+    "-C", "link-arg=-mtune=cortex-a53",
 ]

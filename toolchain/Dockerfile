@@ -159,9 +159,10 @@ export CHOST="$CHOST"
 export CROSS_COMPILE="$CHOST-"
 export PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/opt/lib/pkgconfig"
 export PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
-SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
-NGCONFIG="$NGCONFIG"
+export SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
+export NGCONFIG="$NGCONFIG"
 export TARGET_PREFIX="$CHOST"
+export CARGO_BUILD_TARGET="armv7-unknown-linux-gnueabihf"
 EOF
 
 RUN touch /opt/x-tools/switch-aarch64.sh && chmod +x /opt/x-tools/switch-aarch64.sh && cat <<EOF > /opt/x-tools/switch-aarch64.sh
