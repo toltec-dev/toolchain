@@ -2,7 +2,7 @@ name: release
 on:
   push:
     tags:
-      - '*'
+      - "*"
 jobs:
   stage1:
     name: Stage 1
@@ -65,6 +65,15 @@ jobs:
         run: |
           VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
           echo "version=$VERSION" >> "$GITHUB_ENV"
+      - name: Free up space
+        run: |
+          rm -rf .git/
+          docker system prune --force
+          docker rmi $(docker image ls -aq) || true
+          docker system prune --force
+          export DEBIAN_FRONTEND="noninteractive"
+          sudo apt-get autoremove -y
+          sudo apt-get autoclean -y
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
