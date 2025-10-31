@@ -15,13 +15,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && git clone https://code.qt.io/qt/qt5.git \
     && cd qt5 \
     && git switch 6.7.3 \
-    && bash -c  'source /opt/x-tools/switch-aarch64.sh \
     && GIT_ASKPASS="/bin/echo" perl init-repository --module-subset=qtbase,qtshadertools,qtdeclarative \
     # Setup reMarkable mkspec
     && mv /linux-arm-remarkable-g++ qtbase/mkspecs/devices \
     && mv /linux-aarch64-remarkable-g++ qtbase/mkspecs/devices \
     && cd .. \
     # Build for host machine (required from Qt6+)
+    && bash -c  'source /opt/x-tools/switch-aarch64.sh \
     && mkdir qt5-build \
     && cd qt5-build \
     && unset SYSROOT \
