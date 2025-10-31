@@ -149,7 +149,6 @@ export PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
 export SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
 export NGCONFIG="$NGCONFIG"
 export TARGET_PREFIX="$CHOST"
-export CARGO_BUILD_TARGET="armv7-unknown-linux-gnueabihf"
 EOF
 
 RUN touch /opt/x-tools/switch-aarch64.sh && chmod +x /opt/x-tools/switch-aarch64.sh && cat <<EOF > /opt/x-tools/switch-aarch64.sh
@@ -162,7 +161,6 @@ export PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/
 export SYSROOT="/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot"
 export NGCONFIG="$NGCONFIG_AARCH64"
 export TARGET_PREFIX="$CHOST_AARCH64"
-export CARGO_BUILD_TARGET="aarch64-unknown-linux-gnu"
 EOF
 
 # Configure Opkg
