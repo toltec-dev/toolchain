@@ -139,18 +139,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
-# Save to the environment values useful for setting up cross-compiling
-ENV ARCH=arm \
-    CHOST="$CHOST" \
-    CROSS_COMPILE="$CHOST-" \
-    PATH="$PATH:/opt/x-tools/$NGCONFIG/bin" \
-    PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/opt/lib/pkgconfig" \
-    PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
-    SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot" \
-    SYSROOT_AARCH64="/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64/sysroot" \
-    NGCONFIG="$NGCONFIG" \
-    TARGET_PREFIX="$CHOST"
-	
 RUN touch /opt/x-tools/switch-arm.sh && chmod +x /opt/x-tools/switch-arm.sh && cat <<EOF > /opt/x-tools/switch-arm.sh
 export ARCH=arm
 export CHOST="$CHOST"
