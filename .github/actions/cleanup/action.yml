@@ -5,6 +5,9 @@ runs:
     - name: Free up space
       shell: bash
       run: |
+        df -h
+        echo
+        echo Freeing up space
         rm -rf .git/
         docker system prune --force
         docker rmi $(docker image ls -aq) || true
@@ -22,3 +25,5 @@ runs:
         sudo rm -rf /opt/microsoft /opt/google
         sudo rm -rf /opt/az
         sudo rm -rf /usr/local/share/powershell
+        echo
+        df -h

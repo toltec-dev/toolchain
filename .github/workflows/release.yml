@@ -22,8 +22,6 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_ENV"
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Free up space
-        uses: ./.github/actions/cleanup
       - name: Build and push toolchain
         run: ./scripts/build -p -g -s toolchain -v ${{ env.version }}
   stage2:
@@ -45,8 +43,6 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_ENV"
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Free up space
-        uses: ./.github/actions/cleanup
       - name: Build and push toolchain
         run: ./scripts/build -p -g -s base -v ${{ env.version }}
   stage3:
@@ -70,6 +66,7 @@ jobs:
           VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
           echo "version=$VERSION" >> "$GITHUB_ENV"
       - name: Free up space
+        if: ${{ matrix.target == 'qt' }}
         uses: ./.github/actions/cleanup
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
