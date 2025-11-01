@@ -22,6 +22,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Free up space
+        uses: ./.github/actions/cleanup
       - name: Build and push toolchain
         run: ./scripts/build -p -g -s toolchain
   stage2:
@@ -40,6 +42,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Free up space
+        uses: ./.github/actions/cleanup
       - name: Build and push toolchain
         run: ./scripts/build -p -g -s base
   stage3:
@@ -62,13 +66,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Free up space
-        run: |
-          rm -rf .git/
-          docker system prune --force
-          docker rmi $(docker image ls -aq) || true
-          docker system prune --force
-          export DEBIAN_FRONTEND="noninteractive"
-          sudo apt-get autoremove -y
-          sudo apt-get autoclean -y
+        uses: ./.github/actions/cleanup
       - name: Build and push toolchain
         run: ./scripts/build -p -g -s ${{ matrix.target }}
