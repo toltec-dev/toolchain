@@ -36,7 +36,7 @@ jobs:
           echo "UUID=$UUID" >> "$GITHUB_OUTPUT"
           docker image save ghcr.io/toltec-dev/toolchain | gzip > ${{ runner.temp }}/$UUID-toolchain.tar.gz
       - name: Upload artifact
-        uses: actions/upload-artifact@v4 
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.UUID }}-toolchain
           path: ${{ runner.temp }}/${{ env.UUID }}-toolchain.tar.gz
@@ -70,14 +70,14 @@ jobs:
         run: |
           pushd ${{ runner.temp }}
           tar xf ${{ needs.stage1.outputs.UUID }}-toolchain.tar.gz
+          rm ${{ needs.stage1.outputs.UUID }}-toolchain.tar.gz
           popd
-          rm ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-toolchain.tar.gz
       - name: Build and push toolchain
         run: ./scripts/build -g -s base -c ghcr.io/toltec-dev/toolchain=oci-layout://${{ runner.temp }}
       - name: Export the container
         run: docker image save ghcr.io/toltec-dev/base | gzip > ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
       - name: Upload artifact
-        uses: actions/upload-artifact@v4 
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ needs.stage1.outputs.UUID }}-base
           path: ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-base.tar.gz
@@ -111,14 +111,17 @@ jobs:
         run: |
           pushd ${{ runner.temp }}
           tar xf ${{ needs.stage2.outputs.UUID }}-base.tar.gz
+          rm ${{ needs.stage2.outputs.UUID }}-base.tar.gz
           popd
-          rm ${{ runner.temp }}/${{ needs.stage2.outputs.UUID }}-base.tar.gz
+      - name: Free up space
+        if: ${{ matrix.target == 'qt' }}
+        uses: ./.github/actions/cleanup
       - name: Build and push toolchain
         run: ./scripts/build -g -s ${{ matrix.target }} -c ghcr.io/toltec-dev/base=oci-layout://${{ runner.temp }}
       - name: Export the container
         run: docker image save ghcr.io/toltec-dev/${{ matrix.target }} | gzip > ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-${{ matrix.target }}.tar.gz
       - name: Upload artifact
-        uses: actions/upload-artifact@v4 
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ needs.stage1.outputs.UUID }}-${{ matrix.target }}
           path: ${{ runner.temp }}/${{ needs.stage1.outputs.UUID }}-${{ matrix.target }}.tar.gz

@@ -9,24 +9,24 @@ ARG CHOST_AARCH64="aarch64-remarkable-linux-gnu"
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        build-essential \
-        ca-certificates \
-        cmake \
-        curl \
-        gcc-11 \
-        g++-11 \
-        meson \
-        pkg-config \
-		git \
-		git-lfs \
+    build-essential \
+    ca-certificates \
+    cmake \
+    curl \
+    gcc-11 \
+    g++-11 \
+    meson \
+    pkg-config \
+    git \
+    git-lfs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt \
     # Force use of gcc and g++ 11
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
-        --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11  \
-        --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-11  \
-        --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11 \
-        --slave /usr/bin/g++ g++ /usr/bin/g++-11
+    --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11  \
+    --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-11  \
+    --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11 \
+    --slave /usr/bin/g++ g++ /usr/bin/g++-11
 
 # Build latest crosstool-ng and use it to build the toolchain
 COPY crosstool-ng "/$NGCONFIG"
@@ -34,18 +34,18 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        autoconf \
-        automake \
-        bison \
-        file \
-        flex \
-        gawk \
-        help2man \
-        libncurses-dev \
-        libtool-bin \
-        rsync \
-        texinfo \
-        unzip \
+    autoconf \
+    automake \
+    bison \
+    file \
+    flex \
+    gawk \
+    help2man \
+    libncurses-dev \
+    libtool-bin \
+    rsync \
+    texinfo \
+    unzip \
     # Build crosstool-ng itself
     && cd /root \
     && git clone https://github.com/crosstool-ng/crosstool-ng \
@@ -91,18 +91,18 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && find "/opt/x-tools/$NGCONFIG_AARCH64/$NGCONFIG_AARCH64" -type l,f -name "*.la" -delete \
     && rm "/opt/x-tools/$NGCONFIG_AARCH64/build.log.bz2" \
     && apt-get autoremove -y \
-        autoconf \
-        automake \
-        bison \
-        file \
-        flex \
-        gawk \
-        help2man \
-        libncurses-dev \
-        libtool-bin \
-        rsync \
-        texinfo \
-        unzip \
+    autoconf \
+    automake \
+    bison \
+    file \
+    flex \
+    gawk \
+    help2man \
+    libncurses-dev \
+    libtool-bin \
+    rsync \
+    texinfo \
+    unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
@@ -111,20 +111,20 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        automake \
-        libarchive-dev \
-        libcurl4-gnutls-dev \
-        libgpgme-dev \
-        libssl-dev \
-        libtool-bin \
+    automake \
+    libarchive-dev \
+    libcurl4-gnutls-dev \
+    libgpgme-dev \
+    libssl-dev \
+    libtool-bin \
     && cd /root \
     && git clone --depth 1 --branch v0.4.5 https://git.yoctoproject.org/git/opkg \
     && cd opkg \
     && ./autogen.sh \
     && ./configure \
-        --enable-sha256 \
-        --prefix=/ \
-        --exec-prefix=/usr \
+    --enable-sha256 \
+    --prefix=/ \
+    --exec-prefix=/usr \
     && make -j$(nproc) \
     && make install \
     && cd .. \
@@ -132,10 +132,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf opkg \
     && rm /usr/lib/libopkg.la \
     && apt-get autoremove -y \
-        automake \
-        libarchive-dev \
-        libssl-dev \
-        libtool-bin \
+    automake \
+    libarchive-dev \
+    libssl-dev \
+    libtool-bin \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
 
@@ -143,7 +143,7 @@ RUN touch /opt/x-tools/switch-arm.sh && chmod +x /opt/x-tools/switch-arm.sh && c
 export ARCH=arm
 export CHOST="$CHOST"
 export CROSS_COMPILE="$CHOST-"
-PATH="\$PATH:/opt/x-tools/$NGCONFIG/bin"
+export PATH="\$PATH:/opt/x-tools/$NGCONFIG/bin"
 export PKG_CONFIG_LIBDIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/usr/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/lib/pkgconfig:/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot/opt/lib/pkgconfig"
 export PKG_CONFIG_SYSROOT_DIR="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"
 export SYSROOT="/opt/x-tools/$NGCONFIG/$NGCONFIG/sysroot"

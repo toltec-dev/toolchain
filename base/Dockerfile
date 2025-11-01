@@ -3,7 +3,8 @@ ARG FROM
 FROM $FROM
 
 # Build libcap 2.66 targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Build libcap
     && cd /root \
     && git clone --depth 1 --branch libcap-2.66 git://git.kernel.org/pub/scm/libs/libcap/libcap.git \
@@ -11,29 +12,30 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Compile binaries that run on the build machine using normal GCC
     && sed -i "s/^\(BUILD_CC\) ?= \$(CC)/\1 := gcc/" Make.Rules \
     && make \
-        AR="${CROSS_COMPILE}ar" \
-        CC="${CROSS_COMPILE}gcc" \
-        RANLIB="${CROSS_COMPILE}ranlib" \
-        lib=lib \
-        -j$(nproc) \
+    AR="${CROSS_COMPILE}ar" \
+    CC="${CROSS_COMPILE}gcc" \
+    RANLIB="${CROSS_COMPILE}ranlib" \
+    lib=lib \
+    -j$(nproc) \
     && make install \
-        RAISE_SETFCAP=no \
-        lib=lib \
-        DESTDIR="$SYSROOT" \
+    RAISE_SETFCAP=no \
+    lib=lib \
+    DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
-    && rm -rf libcap
+    && rm -rf libcap'
 
 # Build util-linux 2.37.4 targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        automake \
-        autopoint \
-        bison \
-        gettext \
-        libtool \
+    automake \
+    autopoint \
+    bison \
+    gettext \
+    libtool \
     # Build util-linux
     && cd /root \
     && git clone --depth 1 --branch v2.37.4 https://github.com/karelzak/util-linux.git \
@@ -47,37 +49,38 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf util-linux \
     && find "$SYSROOT" -type l,f -name "*.la" -delete \
     && apt-get autoremove -y \
-        automake \
-        autopoint \
-        bison \
-        gettext \
-        libtool \
+    automake \
+    autopoint \
+    bison \
+    gettext \
+    libtool \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build systemd 250 targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        gettext \
-        gperf \
-        m4 \
-        rsync \
-        python3-pip \
+    gettext \
+    gperf \
+    m4 \
+    rsync \
+    python3-pip \
     && pip3 install --no-cache-dir --break-system-packages jinja2 \
     # Build systemd
     && cd /root \
     && git clone --depth 1 --branch v250.5 https://github.com/systemd/systemd.git \
     && cd systemd \
     && ./configure \
-        --buildtype=release \
-        --cross-file="$CHOST" \
-        --prefix=/ \
-        -Drootprefix=/ \
-        --datadir=usr/share \
-        --includedir=usr/include \
-        --libdir=lib \
+    --buildtype=release \
+    --cross-file="$CHOST" \
+    --prefix=/ \
+    -Drootprefix=/ \
+    --datadir=usr/share \
+    --includedir=usr/include \
+    --libdir=lib \
     && ninja -C build \
     && DESTDIR="$SYSROOT" ninja -C build install \
     && cd .. \
@@ -85,28 +88,29 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf systemd \
     # TODO: remove pip packages as well
     && apt-get autoremove -y \
-        gettext \
-        gperf \
-        m4 \
-        rsync \
-        python3-pip \
+    gettext \
+    gperf \
+    m4 \
+    rsync \
+    python3-pip \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build zlib 1.2.11 and libpng 1.6.39 targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        automake \
-        libtool \
+    automake \
+    libtool \
     # Build static zlib
     && cd /root \
     && git clone --depth 1 --branch v1.2.11 https://github.com/madler/zlib \
     && cd zlib \
     && CC="${CROSS_COMPILE}gcc" CFLAGS=-fPIC ./configure \
-        --static \
-        --prefix=/usr \
+    --static \
+    --prefix=/usr \
     && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
@@ -121,13 +125,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf zlib libpng \
     && find "$SYSROOT" -type l,f -name "*.la" -delete \
     && apt-get autoremove -y \
-        automake \
-        libtool \
+    automake \
+    libtool \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build libevdev 1.12.1 targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Build libevdev
     && cd /root \
     && mkdir libevdev \
@@ -142,10 +147,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf libevdev \
-    && find "$SYSROOT" -type l,f -name "*.la" -delete
+    && find "$SYSROOT" -type l,f -name "*.la" -delete'
 
 # Build OpenSSL 3.0.15 targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Build OpenSSL
     && cd /root \
     && mkdir openssl \
@@ -159,10 +165,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && make DESTDIR="$SYSROOT" install_sw \
     && cd .. \
     # Clean up
-    && rm -rf openssl
+    && rm -rf openssl'
 
 # Build libcurl 7.82.0 targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Build libcurl
     && cd /root \
     && mkdir libcurl \
@@ -177,15 +184,16 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd .. \
     # Clean up
     && rm -rf libcurl \
-    && find "$SYSROOT" -type l,f -name "*.la" -delete
+    && find "$SYSROOT" -type l,f -name "*.la" -delete'
 
 # Build breakpad 0.1 (f88a1aa2af) targeting armhf
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
+    && source /opt/x-tools/switch-arm.sh \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        zlib1g-dev \
-        libssl-dev \
+    zlib1g-dev \
+    libssl-dev \
     # breakpad's build tools require python2 to be available as python on the path
     && cd /root \
     && git clone --depth 1 https://github.com/pyenv/pyenv.git .pyenv \
@@ -211,17 +219,17 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && cd ../.. \
     # Clean up
     && rm -rf \
-        .vpython-root \
-        .vpython_cipd_cache \
-        /tmp/* \
-        breakpad \
-        depot_tools \
-        .pyenv \
+    .vpython-root \
+    .vpython_cipd_cache \
+    /tmp/* \
+    breakpad \
+    depot_tools \
+    .pyenv \
     && apt-get autoremove -y \
-        zlib1g-dev \
-        libssl-dev \
+    zlib1g-dev \
+    libssl-dev \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
 # Build libcap 2.66 targeting aarch64
 RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
@@ -233,15 +241,15 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     # Compile binaries that run on the build machine using normal GCC
     && sed -i "s/^\(BUILD_CC\) ?= \$(CC)/\1 := gcc/" Make.Rules \
     && make \
-        AR="${CROSS_COMPILE}ar" \
-        CC="${CROSS_COMPILE}gcc" \
-        RANLIB="${CROSS_COMPILE}ranlib" \
-        lib=lib \
-        -j$(nproc) \
+    AR="${CROSS_COMPILE}ar" \
+    CC="${CROSS_COMPILE}gcc" \
+    RANLIB="${CROSS_COMPILE}ranlib" \
+    lib=lib \
+    -j$(nproc) \
     && make install \
-        RAISE_SETFCAP=no \
-        lib=lib \
-        DESTDIR="$SYSROOT" \
+    RAISE_SETFCAP=no \
+    lib=lib \
+    DESTDIR="$SYSROOT" \
     && cd .. \
     # Clean up
     && rm -rf libcap'
@@ -252,11 +260,11 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        automake \
-        autopoint \
-        bison \
-        gettext \
-        libtool \
+    automake \
+    autopoint \
+    bison \
+    gettext \
+    libtool \
     # Build util-linux
     && cd /root \
     && git clone --depth 1 --branch v2.37.4 https://github.com/karelzak/util-linux.git \
@@ -270,11 +278,11 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && rm -rf util-linux \
     && find "$SYSROOT" -type l,f -name "*.la" -delete \
     && apt-get autoremove -y \
-        automake \
-        autopoint \
-        bison \
-        gettext \
-        libtool \
+    automake \
+    autopoint \
+    bison \
+    gettext \
+    libtool \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
@@ -284,24 +292,24 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        gettext \
-        gperf \
-        m4 \
-        rsync \
-        python3-pip \
+    gettext \
+    gperf \
+    m4 \
+    rsync \
+    python3-pip \
     && pip3 install --no-cache-dir --break-system-packages jinja2 \
     # Build systemd
     && cd /root \
     && git clone --depth 1 --branch v250.5 https://github.com/systemd/systemd.git \
     && cd systemd \
     && ./configure \
-        --buildtype=release \
-        --cross-file="$CHOST" \
-        --prefix=/ \
-        -Drootprefix=/ \
-        --datadir=usr/share \
-        --includedir=usr/include \
-        --libdir=lib \
+    --buildtype=release \
+    --cross-file="$CHOST" \
+    --prefix=/ \
+    -Drootprefix=/ \
+    --datadir=usr/share \
+    --includedir=usr/include \
+    --libdir=lib \
     && ninja -C build \
     && DESTDIR="$SYSROOT" ninja -C build install \
     && cd .. \
@@ -309,11 +317,11 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && rm -rf systemd \
     # TODO: remove pip packages as well
     && apt-get autoremove -y \
-        gettext \
-        gperf \
-        m4 \
-        rsync \
-        python3-pip \
+    gettext \
+    gperf \
+    m4 \
+    rsync \
+    python3-pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
@@ -323,15 +331,15 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        automake \
-        libtool \
+    automake \
+    libtool \
     # Build static zlib
     && cd /root \
     && git clone --depth 1 --branch v1.2.11 https://github.com/madler/zlib \
     && cd zlib \
     && CC="${CROSS_COMPILE}gcc" CFLAGS=-fPIC ./configure \
-        --static \
-        --prefix=/usr \
+    --static \
+    --prefix=/usr \
     && make -j$(nproc) \
     && DESTDIR="$SYSROOT" make install \
     && cd .. \
@@ -346,8 +354,8 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && rm -rf zlib libpng \
     && find "$SYSROOT" -type l,f -name "*.la" -delete \
     && apt-get autoremove -y \
-        automake \
-        libtool \
+    automake \
+    libtool \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 
@@ -425,8 +433,8 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     # Install build dependencies
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        zlib1g-dev \
-        libssl-dev \
+    zlib1g-dev \
+    libssl-dev \
     # breakpad's build tools require python2 to be available as python on the path
     && cd /root \
     && git clone --depth 1 https://github.com/pyenv/pyenv.git .pyenv \
@@ -452,15 +460,15 @@ RUN /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive \
     && cd ../.. \
     # Clean up
     && rm -rf \
-        .vpython-root \
-        .vpython_cipd_cache \
-        /tmp/* \
-        breakpad \
-        depot_tools \
-        .pyenv \
+    .vpython-root \
+    .vpython_cipd_cache \
+    /tmp/* \
+    breakpad \
+    depot_tools \
+    .pyenv \
     && apt-get autoremove -y \
-        zlib1g-dev \
-        libssl-dev \
+    zlib1g-dev \
+    libssl-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt'
 

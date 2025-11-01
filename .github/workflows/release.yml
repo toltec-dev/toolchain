@@ -2,7 +2,7 @@ name: release
 on:
   push:
     tags:
-      - '*'
+      - "*"
 jobs:
   stage1:
     name: Stage 1
@@ -65,6 +65,9 @@ jobs:
         run: |
           VERSION="$(echo "${{ github.ref }}" | cut -d / -f 3)"
           echo "version=$VERSION" >> "$GITHUB_ENV"
+      - name: Free up space
+        if: ${{ matrix.target == 'qt' }}
+        uses: ./.github/actions/cleanup
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push toolchain
