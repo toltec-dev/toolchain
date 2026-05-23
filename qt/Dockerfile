@@ -106,4 +106,6 @@ RUN --mount=target=/root/qt6,from=qt6base,src=/root/qt6 \
     && rm -r qt6-build \
     && apt-get autoremove -y \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt
+    && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log /var/log/apt \
+    && echo 'export QMAKESPEC=/usr/mkspecs/devices/linux-aarch64-remarkable-g++' >> /opt/x-tools/switch-aarch64.sh \
+    && echo 'export QMAKESPEC=/usr/mkspecs/devices/linux-arm-remarkable-g++' >> /opt/x-tools/switch-arm.sh
